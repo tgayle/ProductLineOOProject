@@ -15,8 +15,7 @@ public class Main extends Application {
     System.out.println(System.getProperty("user.dir"));
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getClassLoader().getResource("ui/productionline.fxml"));
-
-    Parent root = loader.load();
+    final Parent root = loader.load(); // Load view early so that Controller is instantiated
 
     DatabaseProvider db = new DatabaseProvider();
     ProductionLineController controller = loader.getController();
