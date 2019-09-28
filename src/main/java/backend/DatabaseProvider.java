@@ -2,6 +2,7 @@ package backend;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -9,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseProvider implements IProductionDatabaseProvider {
+public class DatabaseProvider {
 
   private Connection connection;
   /**
@@ -23,6 +24,12 @@ public class DatabaseProvider implements IProductionDatabaseProvider {
     connection = DriverManager.getConnection(DB_PATH);
   }
 
+  /**
+   * Prints out the columns of a given table followed by all the items in that table.
+   *
+   * @param tableName The name of the table whose items should be retrieved
+   * @throws SQLException when the executed query results in an error.
+   */
   public void allItemsFromTable(String tableName) throws SQLException {
     Statement stmt = connection.createStatement();
     ResultSet result = stmt.executeQuery("SELECT * FROM " + tableName);
@@ -44,6 +51,12 @@ public class DatabaseProvider implements IProductionDatabaseProvider {
     stmt.close();
   }
 
+  /**
+   * Returns a list of the names of the columns for a table given a ResultSet.
+   * @param rs The ResultSet from which columns should be retrieved.
+   * @return A List with the names of each column in the ResultSet/table
+   * @throws SQLException when retrieving ResultSet metadata results in an error.
+   */
   private static List<String> getColumnNames(ResultSet rs) throws SQLException {
     List<String> names = new ArrayList<>();
     if (rs != null) {
@@ -60,5 +73,27 @@ public class DatabaseProvider implements IProductionDatabaseProvider {
 
   public void close() throws SQLException {
     connection.close();
+  }
+
+  /**
+   * Adds a product to the database.
+   *
+   * @param type The type of the product
+   * @param manufacturer The product manufacturer
+   * @param name The product's name
+   * @return 1 if a product was updated, 2 if a new product was created, -1 if there was an error.
+   */
+  public int insertProduct(String type, String manufacturer, String name) {
+    String insertProductQuery = "INSERT INTO `Product`(type, manufacturer, name) VALUES (?, ?, ?)";
+
+    try (PreparedStatement preparedInsert = connection.prepareStatement(insertProductQuery)) {
+      preparedInsert.setString(1, type);
+      preparedInsert.setString(2, manufacturer);
+      preparedInsert.setString(3, name);
+      return preparedInsert.execute() ? 1 : 2;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return -1;
+    }
   }
 }

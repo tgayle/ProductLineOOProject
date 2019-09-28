@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<TabPane prefHeight="435.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/8.0.171"
+<TabPane prefHeight="435.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/8.0.161"
   xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.ProductionLineController">
 
   <Tab text="Product Line">
@@ -35,15 +35,18 @@
             </rowConstraints>
             <children>
               <Label text="Product Name"/>
-              <JFXTextField GridPane.columnIndex="1"/>
+              <JFXTextField GridPane.columnIndex="1" fx:id="pdLnProductNameText"/>
               <Label text="Manufacturer" GridPane.rowIndex="1"/>
-              <JFXTextField GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+              <JFXTextField GridPane.columnIndex="1" GridPane.rowIndex="1"
+                fx:id="pdLnManufacturerText"/>
               <Label text="Item Type" GridPane.rowIndex="2"/>
               <JFXTextField GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-              <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+              <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                fx:id="pdLnItemTypeCBox"/>
             </children>
           </GridPane>
-          <JFXButton layoutX="229.0" layoutY="174.0" text="Add Product"/>
+          <JFXButton layoutX="229.0" layoutY="174.0" text="Add Product"
+            onAction="#addProductBtnClick"/>
           <Label layoutX="3.0" layoutY="201.0" text="Existing Products"/>
           <TableView layoutX="3.0" layoutY="228.0" prefHeight="174.0" prefWidth="385.0">
             <columns>
@@ -66,7 +69,7 @@
         <JFXListView layoutY="49.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity"
           prefHeight="178.0" prefWidth="390.0"/>
         <Label layoutX="14.0" layoutY="243.0" text="Choose Quantity"/>
-        <JFXComboBox layoutX="133.0" layoutY="238.0"/>
+        <JFXComboBox layoutX="133.0" layoutY="238.0" fx:id="rcPdQuantityCBox"/>
         <JFXButton layoutX="238.0" layoutY="287.0" text="Record Production"/>
       </children>
     </AnchorPane>
