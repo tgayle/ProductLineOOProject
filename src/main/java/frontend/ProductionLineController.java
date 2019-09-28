@@ -1,6 +1,7 @@
 package frontend;
 
 import backend.DatabaseProvider;
+import javafx.scene.input.MouseEvent;
 
 public class ProductionLineController {
 
@@ -24,5 +25,9 @@ public class ProductionLineController {
 
   public void prodLabBtnClicked() {
     System.out.println("Hello from the production lab!");
+  }
+
+  public void addProductBtnClick(MouseEvent mouseEvent) {
+    System.out.println("Hello from product line button!");
   }
 }

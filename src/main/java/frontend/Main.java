@@ -11,7 +11,11 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("productionline.fxml"));
+
+    System.out.println(System.getProperty("user.dir"));
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(getClass().getClassLoader().getResource("ui/productionline.fxml"));
+
     Parent root = loader.load();
 
     DatabaseProvider db = new DatabaseProvider();
@@ -21,8 +25,13 @@ public class Main extends Application {
     db.allItemsFromTable("PRODUCT");
 
     primaryStage.setTitle("Production Line Management Software");
-    primaryStage.setScene(new Scene(root));
+    Scene scene = new Scene(root);
+    scene.getStylesheets()
+        .add(getClass().getClassLoader().getResource("ui/ProductionLine.css").toExternalForm());
+
+    primaryStage.setScene(scene);
     primaryStage.show();
+
   }
 
 

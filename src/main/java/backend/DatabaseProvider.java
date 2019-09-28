@@ -16,7 +16,7 @@ public class DatabaseProvider implements IProductionDatabaseProvider {
    * The path to our database. When run from IntelliJ, the starting directory is the root of the
    * project.
    */
-  private static final String DB_PATH = "jdbc:h2:" + "./res/ProductionLineDB";
+  private static final String DB_PATH = "jdbc:h2:" + "./src/main/resources/db/ProductionLineDB";
 
   public DatabaseProvider() throws SQLException, ClassNotFoundException {
     Class.forName("org.h2.Driver");
