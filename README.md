@@ -9,7 +9,11 @@ The purpose of this application is to display and tie together concepts learned 
 
 
 ## Diagrams
-TODO
+**Class Diagram**
+![Classes](class_diagram.png)
+
+**Database Diagram**
+![Database Diagram](database_diagram.png)
 
 
 ## Getting Started
