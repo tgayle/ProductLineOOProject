@@ -32,8 +32,4 @@ public class Screen implements ScreenSpec {
     String format = "Resolution: %s%nRefresh Rate: %d%nResponse Time: %d hz";
     return String.format(format, resolution, refreshRate, responseTime);
   }
-
-  public static void main(String[] args) {
-    System.out.println(new Screen("1920x1080", 120, 2));
-  }
 }

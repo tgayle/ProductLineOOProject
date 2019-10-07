@@ -54,10 +54,4 @@ public class MoviePlayer extends Product implements MultimediaControl {
         "%s%nScreen: %s%nMonitor Type: %s",
         super.toString(), screen.toString(), monitorType.toString());
   }
-
-  public static void main(String[] args) {
-    MoviePlayer player = new MoviePlayer("iPod Touch", "Apple",
-        new Screen("1920x1080", 60, 1), MonitorType.LCD);
-    System.out.println(player);
-  }
 }
