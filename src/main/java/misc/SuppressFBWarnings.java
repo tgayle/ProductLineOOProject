@@ -18,7 +18,7 @@ public @interface SuppressFBWarnings {
   String[] value() default {};
 
   /**
-   * Optional documentation of the reason why the warning is suppressed
+   * Optional documentation of the reason why the warning is suppressed.
    */
   String justification() default "";
 }

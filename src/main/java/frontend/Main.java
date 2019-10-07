@@ -9,6 +9,10 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+  public static void main(String[] args) {
+    launch(args);
+  }
+
   @Override
   public void start(Stage primaryStage) throws Exception {
 
@@ -17,10 +21,7 @@ public class Main extends Application {
     loader.setLocation(getClass().getClassLoader().getResource("ui/productionline.fxml"));
     final Parent root = loader.load(); // Load view early so that Controller is instantiated
 
-    DatabaseProvider db = new DatabaseProvider();
-    ProductionLineController controller = loader.getController();
-    controller.setDatabase(db);
-
+    DatabaseProvider db = DatabaseProvider.get();
     db.allItemsFromTable("PRODUCT");
 
     primaryStage.setTitle("Production Line Management Software");
@@ -31,10 +32,5 @@ public class Main extends Application {
     primaryStage.setScene(scene);
     primaryStage.show();
 
-  }
-
-
-  public static void main(String[] args) {
-    launch(args);
   }
 }
