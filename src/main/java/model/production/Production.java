@@ -1,4 +1,4 @@
-package model;
+package model.production;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +21,14 @@ public class Production {
    * @param manufacturedOn The date and time that the product was produced.
    */
   public Production(int productId, int quantity, LocalDateTime manufacturedOn) {
+    this.productId = productId;
+    this.quantity = quantity;
+    this.manufacturedOn = manufacturedOn;
+  }
+
+  public Production(int productionId, int productId, int quantity,
+      LocalDateTime manufacturedOn) {
+    this.productionId = productionId;
     this.productId = productId;
     this.quantity = quantity;
     this.manufacturedOn = manufacturedOn;
@@ -53,6 +61,7 @@ public class Production {
   public LocalDateTime getManufacturedOn() {
     return manufacturedOn;
   }
+
 
   public void setManufacturedOn(LocalDateTime manufacturedOn) {
     this.manufacturedOn = manufacturedOn;

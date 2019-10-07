@@ -1,4 +1,4 @@
-package model;
+package model.video;
 
 public class Screen implements ScreenSpec {
 

@@ -11,8 +11,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import model.Product;
-import model.Production;
 import model.Widget;
+import model.production.Production;
+import model.production.ProductionWithProduct;
 
 public class DatabaseProvider {
 
@@ -171,5 +172,47 @@ public class DatabaseProvider {
         e.printStackTrace();
       }
     }
+  }
+
+  public List<Production> getAllProductions() throws SQLException {
+    String allQuery = "SELECT * FROM PRODUCTIONRECORD";
+    List<Production> productions = new ArrayList<>();
+    ResultSet rows = connection.createStatement().executeQuery(allQuery);
+
+    while (rows.next()) {
+      int productionId = rows.getInt(1);
+      int productId = rows.getInt(2);
+      int quantity = rows.getInt(3);
+      Timestamp dateProduced = rows.getTimestamp(4);
+      productions
+          .add(new Production(productionId, productId, quantity, dateProduced.toLocalDateTime()));
+    }
+
+    return productions;
+  }
+
+  public List<ProductionWithProduct> getAllProductionsWithItems() throws SQLException {
+    final String getProductsWithProductQuery =
+        "SELECT PR.PRODUCTION_ID, PR.PRODUCT_ID, PR.QUANTITY, PR.DATE_PRODUCED, P.NAME, P.MANUFACTURER, P.TYPE\n"
+            + "FROM PRODUCTIONRECORD PR\n"
+            + "JOIN PRODUCT P on (PR.PRODUCT_ID=P.ID)";
+
+    List<ProductionWithProduct> productions = new ArrayList<>();
+    ResultSet rows = connection.createStatement().executeQuery(getProductsWithProductQuery);
+    while (rows.next()) {
+      int productionId = rows.getInt(1);
+      int productId = rows.getInt(2);
+      int quantity = rows.getInt(3);
+      Timestamp dateProduced = rows.getTimestamp(4);
+      String productName = rows.getString(5);
+      String manufacturer = rows.getString(6);
+      String productType = rows.getString(7);
+
+      Product productProduced = new Widget(productId, productName, productType, manufacturer);
+      productions.add(
+          new ProductionWithProduct(productionId, quantity, dateProduced.toLocalDateTime(),
+              productProduced));
+    }
+    return productions;
   }
 }

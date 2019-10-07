@@ -1,4 +1,8 @@
-package model;
+package model.video;
+
+import model.ItemType;
+import model.MultimediaControl;
+import model.Product;
 
 public class MoviePlayer extends Product implements MultimediaControl {
 

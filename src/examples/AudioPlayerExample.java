@@ -1,6 +1,6 @@
 package examples;
 
-import model.AudioPlayer;
+import model.audio.AudioPlayer;
 
 public class AudioPlayerExample {
 

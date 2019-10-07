@@ -1,8 +1,8 @@
 package examples;
 
-import model.MonitorType;
-import model.MoviePlayer;
-import model.Screen;
+import model.video.MonitorType;
+import model.video.MoviePlayer;
+import model.video.Screen;
 
 public class MoviePlayerExample {
 

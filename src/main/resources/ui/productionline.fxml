@@ -3,7 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXListView?>
-<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -16,10 +15,15 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<TabPane prefHeight="435.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/8.0.161"
-  xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.ProductionLineController">
+<TabPane
+  prefHeight="435.0"
+  prefWidth="390.0"
+  xmlns="http://javafx.com/javafx/8.0.161"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:id="mainTabPane"
+  fx:controller="frontend.ProductionLineController">
 
-  <Tab text="Product Line">
+  <Tab text="Product Line" fx:id="productionLineTab">
     <content>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
         <children>
@@ -62,7 +66,7 @@
     </content>
   </Tab>
 
-  <Tab text="Produce">
+  <Tab text="Produce" fx:id="produceTab">
     <AnchorPane>
       <children>
         <Label layoutX="6.0" layoutY="20.0" text="Choose Product"/>
@@ -78,11 +82,17 @@
 
   </Tab>
 
-  <Tab text="Production Log">
+  <Tab text="Production Log" fx:id="productionLogTab">
     <content>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
         <children>
-          <JFXTextArea layoutY="3.0" prefHeight="391.0" prefWidth="390.0"/>
+          <TableView layoutY="3.0" prefHeight="391.0" prefWidth="390.0" fx:id="productionLogTable">
+            <columns>
+              <TableColumn prefWidth="75.0" text="Product" fx:id="columnProductName"/>
+              <TableColumn prefWidth="75.0" text="Quantity" fx:id="columnQuantityProduced"/>
+              <TableColumn prefWidth="75.0" text="Date Produced" fx:id="columnDateProduced"/>
+            </columns>
+          </TableView>
         </children>
       </AnchorPane>
     </content>

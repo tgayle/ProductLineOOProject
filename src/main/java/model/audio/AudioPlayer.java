@@ -1,4 +1,8 @@
-package model;
+package model.audio;
+
+import model.ItemType;
+import model.MultimediaControl;
+import model.Product;
 
 public class AudioPlayer extends Product implements MultimediaControl {
 

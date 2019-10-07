@@ -50,4 +50,8 @@ public abstract class Product implements Item {
     String format = "Name: %s\nManufacturer: %s\nType: %s";
     return String.format(format, name, manufacturer, type);
   }
+
+  public String getSimpleName() {
+    return String.format("%s %s (%s)", manufacturer, name, type);
+  }
 }

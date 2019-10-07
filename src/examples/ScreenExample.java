@@ -1,6 +1,6 @@
 package examples;
 
-import model.Screen;
+import model.video.Screen;
 
 public class ScreenExample {
 

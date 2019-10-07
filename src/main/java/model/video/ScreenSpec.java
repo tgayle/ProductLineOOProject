@@ -1,4 +1,4 @@
-package model;
+package model.video;
 
 public interface ScreenSpec {
 

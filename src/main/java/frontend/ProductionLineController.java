@@ -9,12 +9,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import misc.SuppressFBWarnings;
 import model.ItemType;
 import model.Product;
-import model.Production;
+import model.production.Production;
+import model.production.ProductionWithProduct;
 
 public class ProductionLineController {
 
@@ -24,6 +31,13 @@ public class ProductionLineController {
 
   public JFXComboBox<String> produceQuantityCBox;
   public JFXListView<Product> produceProductList;
+  public Tab productionLogTab;
+  public TabPane mainTabPane;
+
+  public TableColumn<ProductionWithProduct, String> columnProductName;
+  public TableColumn<ProductionWithProduct, Integer> columnQuantityProduced;
+  public TableColumn<ProductionWithProduct, String> columnDateProduced;
+  public TableView<ProductionWithProduct> productionLogTable;
 
   private DatabaseProvider database = DatabaseProvider.get();
 
@@ -43,6 +57,30 @@ public class ProductionLineController {
 
     prepareProductionLineTab();
     prepareProduceTab();
+    prepareProductionLogTab();
+
+    mainTabPane.getSelectionModel().selectedItemProperty().addListener(
+        (observableValue, oldTab, newTab) -> {
+          System.out.println(newTab.getId());
+          switch (newTab.getId()) {
+            case "productionLineTab":
+              updateProductionLineTab();
+              break;
+            case "produceTab":
+              updateProduceTab();
+              break;
+            case "productionLogTab":
+              updateProductionLogTab();
+              break;
+          }
+        });
+  }
+
+  private void prepareProductionLogTab() {
+    columnDateProduced.setCellValueFactory(new PropertyValueFactory<>("manufacturedOn"));
+    columnProductName.setCellValueFactory(new PropertyValueFactory<>("productSimpleName"));
+    columnQuantityProduced.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+    updateProductionLogTab();
   }
 
   private void prepareProduceTab() {
@@ -52,12 +90,7 @@ public class ProductionLineController {
     produceQuantityCBox.setEditable(true); // Allow users to enter their own quantities
     produceQuantityCBox.getSelectionModel().selectFirst(); // Select first item in list
 
-    try {
-      List<Product> allProducts = database.getAllProducts();
-      produceProductList.getItems().addAll(allProducts);
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+    updateProduceTab();
   }
 
   private void prepareProductionLineTab() {
@@ -66,6 +99,7 @@ public class ProductionLineController {
     }
 
     pdLnItemTypeCBox.getSelectionModel().selectFirst();
+    updateProductionLineTab();
   }
 
   /**
@@ -103,5 +137,29 @@ public class ProductionLineController {
         }).collect(Collectors.toList());
 
     database.recordProductions(productions);
+    produceProductList.getSelectionModel().clearSelection();
+  }
+
+  private void updateProductionLogTab() {
+    try {
+      List<ProductionWithProduct> allProductions = database.getAllProductionsWithItems();
+      productionLogTable.setItems(FXCollections.observableList(allProductions));
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void updateProduceTab() {
+    try {
+      List<Product> allProducts = database.getAllProducts();
+      produceProductList.setItems(FXCollections.observableList(allProducts));
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void updateProductionLineTab() {
+    // TODO: Show items in database
   }
 }
