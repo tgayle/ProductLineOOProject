@@ -12,7 +12,6 @@ import java.util.stream.IntStream;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -20,7 +19,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import misc.SuppressFBWarnings;
 import model.ItemType;
 import model.Product;
-import model.Widget;
 import model.audio.AudioPlayer;
 import model.production.Production;
 import model.production.ProductionWithProduct;
@@ -36,7 +34,6 @@ public class ProductionLineController {
 
   public JFXComboBox<String> produceQuantityCBox;
   public JFXListView<Product> produceProductList;
-  public Tab productionLogTab;
   public TabPane mainTabPane;
 
   public TableColumn<ProductionWithProduct, String> columnProductName;
@@ -117,30 +114,27 @@ public class ProductionLineController {
       justification
           = "These fields are instantiated by the FXMLLoader, which FindBugs does not detect.")
   public void addProductBtnClick(ActionEvent evt) {
-    Product product;
+    Product product = null;
     String manufacturer = pdLnManufacturerText.getText();
     String productName = pdLnProductNameText.getText();
-    ItemType itemType = ItemType.valueOf(pdLnItemTypeCBox.getValue());
+    String cboxItemType = pdLnItemTypeCBox.getValue();
+    ItemType itemType = ItemType.valueOf(cboxItemType);
 
     switch (itemType) {
       case Audio:
+      case AudioMobile:
+        // TODO: Take in audio specification or screen type from user.
         product = new AudioPlayer(productName, manufacturer);
         break;
       case Visual:
+      case VisualMobile:
         product = new MoviePlayer(productName, manufacturer, new Screen("1920x1080", 60, 2),
             MonitorType.LCD);
         break;
-      default:
-        product = new Widget(productName, manufacturer, itemType.toString());
     }
 
-    if (product != null) {
-      int result = database.insertProduct(product);
-      System.out.println(result);
-    } else {
-      System.out.println("Product was null? Likely an itemtype we haven't setup yet.");
-    }
-
+    int result = database.insertProduct(product);
+    System.out.println(result);
   }
 
   /**

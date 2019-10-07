@@ -185,7 +185,6 @@ public class DatabaseProvider {
         productions
             .add(new Production(productionId, productId, quantity, dateProduced.toLocalDateTime()));
       }
-      rows.close();
     }
     return productions;
   }
