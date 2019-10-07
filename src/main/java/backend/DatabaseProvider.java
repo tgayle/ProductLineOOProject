@@ -128,16 +128,15 @@ public class DatabaseProvider {
   public List<Product> getAllProducts() throws SQLException {
     String allQuery = "SELECT * FROM PRODUCT";
     List<Product> products = new ArrayList<>();
-    ResultSet rows = connection.createStatement().executeQuery(allQuery);
-
-    while (rows.next()) {
-      int id = rows.getInt(1);
-      String name = rows.getString(2);
-      String type = rows.getString(3);
-      String manufacturer = rows.getString(4);
-      products.add(new Widget(id, name, type, manufacturer));
+    try (ResultSet rows = connection.createStatement().executeQuery(allQuery)) {
+      while (rows.next()) {
+        int id = rows.getInt(1);
+        String name = rows.getString(2);
+        String type = rows.getString(3);
+        String manufacturer = rows.getString(4);
+        products.add(new Widget(id, name, type, manufacturer));
+      }
     }
-
     return products;
   }
 
@@ -151,12 +150,13 @@ public class DatabaseProvider {
       connection.setAutoCommit(false);
       String insertionQuery =
           "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, QUANTITY, DATE_PRODUCED) VALUES (?, ?, ?)";
-      PreparedStatement stmnt = connection.prepareStatement(insertionQuery);
-      for (Production production : productions) {
-        stmnt.setInt(1, production.getProductId());
-        stmnt.setInt(2, production.getQuantity());
-        stmnt.setTimestamp(3, Timestamp.valueOf(production.getManufacturedOn()));
-        stmnt.execute();
+      try (PreparedStatement stmnt = connection.prepareStatement(insertionQuery)) {
+        for (Production production : productions) {
+          stmnt.setInt(1, production.getProductId());
+          stmnt.setInt(2, production.getQuantity());
+          stmnt.setTimestamp(3, Timestamp.valueOf(production.getManufacturedOn()));
+          stmnt.execute();
+        }
       }
       connection.commit();
       System.out.println(productions.size() + " productions were recorded.");
@@ -177,17 +177,18 @@ public class DatabaseProvider {
   public List<Production> getAllProductions() throws SQLException {
     String allQuery = "SELECT * FROM PRODUCTIONRECORD";
     List<Production> productions = new ArrayList<>();
-    ResultSet rows = connection.createStatement().executeQuery(allQuery);
+    try (ResultSet rows = connection.createStatement().executeQuery(allQuery)) {
 
-    while (rows.next()) {
-      int productionId = rows.getInt(1);
-      int productId = rows.getInt(2);
-      int quantity = rows.getInt(3);
-      Timestamp dateProduced = rows.getTimestamp(4);
-      productions
-          .add(new Production(productionId, productId, quantity, dateProduced.toLocalDateTime()));
+      while (rows.next()) {
+        int productionId = rows.getInt(1);
+        int productId = rows.getInt(2);
+        int quantity = rows.getInt(3);
+        Timestamp dateProduced = rows.getTimestamp(4);
+        productions
+            .add(new Production(productionId, productId, quantity, dateProduced.toLocalDateTime()));
+      }
+      rows.close();
     }
-
     return productions;
   }
 
@@ -213,6 +214,7 @@ public class DatabaseProvider {
           new ProductionWithProduct(productionId, quantity, dateProduced.toLocalDateTime(),
               productProduced));
     }
+    rows.close();
     return productions;
   }
 }
