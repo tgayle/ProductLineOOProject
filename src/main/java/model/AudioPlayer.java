@@ -5,9 +5,12 @@ public class AudioPlayer extends Product implements MultimediaControl {
   private String audioSpecification;
   private String mediaType;
 
-  public AudioPlayer(String name, String manufacturer, String audioSpecification) {
+  public AudioPlayer(String name, String manufacturer, String audioSpecification,
+      String mediaType) {
     super(name, manufacturer);
     this.audioSpecification = audioSpecification;
+    this.mediaType = mediaType;
+    this.type = ItemType.Audio.getCode();
   }
 
   @Override
@@ -33,8 +36,8 @@ public class AudioPlayer extends Product implements MultimediaControl {
   @Override
   public String toString() {
     String output = super.toString() + "\n";
-    output += "Audio Spec: " + audioSpecification + "\n";
-    output += "Media Type: " + mediaType;
+    output += "Supported Audio Formats: " + audioSpecification + "\n";
+    output += "Supported Playlist Formats: " + mediaType;
     return output;
   }
 
