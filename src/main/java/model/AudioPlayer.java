@@ -10,7 +10,7 @@ public class AudioPlayer extends Product implements MultimediaControl {
     super(name, manufacturer);
     this.audioSpecification = audioSpecification;
     this.mediaType = mediaType;
-    this.type = ItemType.Audio.getCode();
+    this.type = ItemType.Audio.toString();
   }
 
   @Override
@@ -55,5 +55,10 @@ public class AudioPlayer extends Product implements MultimediaControl {
 
   public void setMediaType(String mediaType) {
     this.mediaType = mediaType;
+  }
+
+  // TODO: Make examples module.
+  public static void main(String[] args) {
+    System.out.println(new AudioPlayer("iPod", "Apple", "MP3", "AAC"));
   }
 }
