@@ -10,6 +10,11 @@ public class Widget extends Product {
     super(name, manufacturer);
   }
 
+  public Widget(String name, String manufacturer, String type) {
+    super(name, manufacturer);
+    this.type = type;
+  }
+
   /**
    * Creates a basic product.
    *

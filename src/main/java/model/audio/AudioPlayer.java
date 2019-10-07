@@ -6,15 +6,19 @@ import model.Product;
 
 public class AudioPlayer extends Product implements MultimediaControl {
 
-  private String audioSpecification;
-  private String mediaType;
+  private String supportedAudioFormats;
+  private String supportedPlaylistFormats;
 
-  public AudioPlayer(String name, String manufacturer, String audioSpecification,
-      String mediaType) {
+  public AudioPlayer(String name, String manufacturer, String supportedAudioFormats,
+      String supportedPlaylistFormats) {
     super(name, manufacturer);
-    this.audioSpecification = audioSpecification;
-    this.mediaType = mediaType;
+    this.supportedAudioFormats = supportedAudioFormats;
+    this.supportedPlaylistFormats = supportedPlaylistFormats;
     this.type = ItemType.Audio.toString();
+  }
+
+  public AudioPlayer(String name, String manufacturer) {
+    this(name, manufacturer, "N/A", "N/A");
   }
 
   @Override
@@ -40,24 +44,24 @@ public class AudioPlayer extends Product implements MultimediaControl {
   @Override
   public String toString() {
     String output = super.toString() + "\n";
-    output += "Supported Audio Formats: " + audioSpecification + "\n";
-    output += "Supported Playlist Formats: " + mediaType;
+    output += "Supported Audio Formats: " + supportedAudioFormats + "\n";
+    output += "Supported Playlist Formats: " + supportedPlaylistFormats;
     return output;
   }
 
-  public String getAudioSpecification() {
-    return audioSpecification;
+  public String getSupportedAudioFormats() {
+    return supportedAudioFormats;
   }
 
-  public void setAudioSpecification(String audioSpecification) {
-    this.audioSpecification = audioSpecification;
+  public void setSupportedAudioFormats(String supportedAudioFormats) {
+    this.supportedAudioFormats = supportedAudioFormats;
   }
 
-  public String getMediaType() {
-    return mediaType;
+  public String getSupportedPlaylistFormats() {
+    return supportedPlaylistFormats;
   }
 
-  public void setMediaType(String mediaType) {
-    this.mediaType = mediaType;
+  public void setSupportedPlaylistFormats(String supportedPlaylistFormats) {
+    this.supportedPlaylistFormats = supportedPlaylistFormats;
   }
 }

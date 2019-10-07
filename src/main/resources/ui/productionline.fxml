@@ -33,7 +33,6 @@
                 fx:id="pdLnItemTypeCBox"/>
               <JFXTextField GridPane.columnIndex="1" GridPane.rowIndex="1"
                 fx:id="pdLnManufacturerText"/>
-              <JFXTextField GridPane.columnIndex="1" GridPane.rowIndex="2"/>
               <JFXTextField GridPane.columnIndex="1" fx:id="pdLnProductNameText"/>
               <Label GridPane.rowIndex="2" text="Item Type"/>
               <Label GridPane.rowIndex="1" text="Manufacturer"/>

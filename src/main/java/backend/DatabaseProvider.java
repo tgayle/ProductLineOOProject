@@ -100,18 +100,16 @@ public class DatabaseProvider {
   /**
    * Adds a product to the database.
    *
-   * @param type The type of the product
-   * @param manufacturer The product manufacturer
-   * @param name The product's name
+   * @param product The product to be inserted
    * @return 1 if a product was updated, 2 if a new product was created, -1 if there was an error.
    */
-  public int insertProduct(String type, String manufacturer, String name) {
+  public int insertProduct(Product product) {
     String insertProductQuery = "INSERT INTO `Product`(type, manufacturer, name) VALUES (?, ?, ?)";
 
     try (PreparedStatement preparedInsert = connection.prepareStatement(insertProductQuery)) {
-      preparedInsert.setString(1, type);
-      preparedInsert.setString(2, manufacturer);
-      preparedInsert.setString(3, name);
+      preparedInsert.setString(1, product.getItemType().getCode());
+      preparedInsert.setString(2, product.getManufacturer());
+      preparedInsert.setString(3, product.getName());
       return preparedInsert.execute() ? 1 : 2;
     } catch (SQLException e) {
       e.printStackTrace();

@@ -20,8 +20,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import misc.SuppressFBWarnings;
 import model.ItemType;
 import model.Product;
+import model.Widget;
+import model.audio.AudioPlayer;
 import model.production.Production;
 import model.production.ProductionWithProduct;
+import model.video.MonitorType;
+import model.video.MoviePlayer;
+import model.video.Screen;
 
 public class ProductionLineController {
 
@@ -112,13 +117,30 @@ public class ProductionLineController {
       justification
           = "These fields are instantiated by the FXMLLoader, which FindBugs does not detect.")
   public void addProductBtnClick(ActionEvent evt) {
-    int result = database.insertProduct(
-        pdLnItemTypeCBox.getValue(),
-        pdLnManufacturerText.getText(),
-        pdLnProductNameText.getText()
-    );
+    Product product;
+    String manufacturer = pdLnManufacturerText.getText();
+    String productName = pdLnProductNameText.getText();
+    ItemType itemType = ItemType.valueOf(pdLnItemTypeCBox.getValue());
 
-    System.out.println(result);
+    switch (itemType) {
+      case Audio:
+        product = new AudioPlayer(productName, manufacturer);
+        break;
+      case Visual:
+        product = new MoviePlayer(productName, manufacturer, new Screen("1920x1080", 60, 2),
+            MonitorType.LCD);
+        break;
+      default:
+        product = new Widget(productName, manufacturer, itemType.toString());
+    }
+
+    if (product != null) {
+      int result = database.insertProduct(product);
+      System.out.println(result);
+    } else {
+      System.out.println("Product was null? Likely an itemtype we haven't setup yet.");
+    }
+
   }
 
   /**
