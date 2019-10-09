@@ -41,6 +41,11 @@ public class ProductionLineController {
   public TableColumn<ProductionWithProduct, String> columnDateProduced;
   public TableView<ProductionWithProduct> productionLogTable;
 
+  public TableColumn<Product, String> productListColumnName;
+  public TableColumn<Product, String> productListColumnType;
+  public TableColumn<Product, String> productListManufacturer;
+  public TableView<Product> productListTable;
+
   private DatabaseProvider database = DatabaseProvider.get();
 
   /**
@@ -101,6 +106,11 @@ public class ProductionLineController {
     }
 
     pdLnItemTypeCBox.getSelectionModel().selectFirst();
+
+    productListColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+    productListColumnType.setCellValueFactory(new PropertyValueFactory<>("type"));
+    productListManufacturer.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
+
     updateProductionLineTab();
   }
 
@@ -177,5 +187,11 @@ public class ProductionLineController {
 
   private void updateProductionLineTab() {
     // TODO: Show items in database
+    try {
+      List<Product> allProducts = database.getAllProducts();
+      productListTable.setItems(FXCollections.observableList(allProducts));
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 }

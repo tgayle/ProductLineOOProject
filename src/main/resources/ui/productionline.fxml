@@ -51,10 +51,12 @@
           <JFXButton layoutX="229.0" layoutY="174.0" onAction="#addProductBtnClick"
             text="Add Product"/>
           <Label layoutX="3.0" layoutY="201.0" text="Existing Products"/>
-          <TableView layoutX="3.0" layoutY="228.0" prefHeight="174.0" prefWidth="385.0">
+          <TableView layoutX="3.0" layoutY="228.0" prefHeight="174.0" prefWidth="385.0"
+            fx:id="productListTable">
             <columns>
-              <TableColumn prefWidth="75.0" text="C1"/>
-              <TableColumn prefWidth="75.0" text="C2"/>
+              <TableColumn prefWidth="154.0" text="Name" fx:id="productListColumnName"/>
+              <TableColumn prefWidth="77.0" text="Type" fx:id="productListColumnType"/>
+              <TableColumn prefWidth="150.0" text="Manufacturer" fx:id="productListManufacturer"/>
             </columns>
           </TableView>
         </children>
