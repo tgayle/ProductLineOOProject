@@ -31,6 +31,14 @@ public class Production {
     this.manufacturedOn = manufacturedOn;
   }
 
+  /**
+   * Creates an instance of a production record.
+   *
+   * @param productionId The id of this production
+   * @param productId The id of the product produced
+   * @param quantity The number of products produced
+   * @param manufacturedOn The date and time that this production was processed
+   */
   public Production(int productionId, int productId, int quantity,
       LocalDateTime manufacturedOn) {
     this.productionId = productionId;
@@ -39,12 +47,21 @@ public class Production {
     this.manufacturedOn = manufacturedOn;
   }
 
+  /**
+   * Creates a production record given a product id, a quantity, and the date and time this
+   * production was processed.
+   * @see #Production(int, int, int, LocalDateTime)
+   */
   public Production(int productId, int quantity, LocalDateTime manufacturedOn) {
     this.productId = productId;
     this.quantity = quantity;
     this.manufacturedOn = manufacturedOn;
   }
 
+  /**
+   * Creates a production record .
+   * @see #Production(int, int, int, LocalDateTime)
+   */
   public Production(int productionId, int productId, int quantity, String serialNumber,
       LocalDateTime manufacturedOn) {
     this.productionId = productionId;

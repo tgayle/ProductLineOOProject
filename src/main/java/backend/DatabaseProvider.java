@@ -149,7 +149,9 @@ public class DatabaseProvider {
     try {
       connection.setAutoCommit(false);
       String insertionQuery =
-          "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, QUANTITY, DATE_PRODUCED, SERIAL_NUM) VALUES (?, ?, ?, ?)";
+          "INSERT INTO PRODUCTIONRECORD "
+              + "(PRODUCT_ID, QUANTITY, DATE_PRODUCED, SERIAL_NUM) VALUES (?, ?, ?, ?)";
+
       try (PreparedStatement stmnt = connection.prepareStatement(insertionQuery)) {
         for (Production production : productions) {
           stmnt.setInt(1, production.getProductId());
@@ -175,6 +177,12 @@ public class DatabaseProvider {
     }
   }
 
+  /**
+   * Returns a list of all productions from the databse.
+   *
+   * @return a list of productions
+   * @throws SQLException if there is an error communicating with the database.
+   */
   public List<Production> getAllProductions() throws SQLException {
     String allQuery = "SELECT * FROM PRODUCTIONRECORD";
     List<Production> productions = new ArrayList<>();
@@ -192,9 +200,15 @@ public class DatabaseProvider {
     return productions;
   }
 
+  /**
+   * Returns a list of productions with their associated items.
+   * @return a list of productions and the items produced.
+   * @throws SQLException if there is an issue communicating with the database.
+   */
   public List<ProductionWithProduct> getAllProductionsWithItems() throws SQLException {
     final String getProductsWithProductQuery =
-        "SELECT PR.PRODUCTION_ID, PR.PRODUCT_ID, PR.QUANTITY, PR.DATE_PRODUCED, P.NAME, P.MANUFACTURER, P.TYPE, PR.SERIAL_NUM\n"
+        "SELECT PR.PRODUCTION_ID, PR.PRODUCT_ID, PR.QUANTITY, PR.DATE_PRODUCED,"
+            + " P.NAME, P.MANUFACTURER, P.TYPE, PR.SERIAL_NUM\n"
             + "FROM PRODUCTIONRECORD PR\n"
             + "JOIN PRODUCT P on (PR.PRODUCT_ID=P.ID)";
 
@@ -221,7 +235,7 @@ public class DatabaseProvider {
   }
 
   /**
-   * Gets the number of products currently stored with the given type
+   * Gets the number of products currently stored with the given type.
    *
    * @param type The ItemType to count
    * @return the number of items with the given type

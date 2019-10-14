@@ -16,12 +16,12 @@ public abstract class Product implements Item {
     return type;
   }
 
-  public ItemType getItemType() {
-    return ItemType.fromCode(type);
-  }
-
   public void setType(String type) {
     this.type = type;
+  }
+
+  public ItemType getItemType() {
+    return ItemType.fromCode(type);
   }
 
   @Override

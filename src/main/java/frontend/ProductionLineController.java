@@ -80,6 +80,9 @@ public class ProductionLineController {
             case "productionLogTab":
               updateProductionLogTab();
               break;
+            default:
+              System.out.println(
+                  "New tab selected but not handled elsewhere? Tab: " + newTab.toString());
           }
         });
   }
@@ -146,12 +149,14 @@ public class ProductionLineController {
         product = new MoviePlayer(productName, manufacturer, new Screen("1920x1080", 60, 2),
             MonitorType.LCD);
         break;
+      default:
+        throw new RuntimeException("Unhandled ItemType: " + itemType + " -> " + cboxItemType);
     }
 
-    int result = database.insertProduct(product);
-    updateProductionLineTab();
     pdLnManufacturerText.clear();
     pdLnProductNameText.clear();
+    int result = database.insertProduct(product);
+    updateProductionLineTab();
     System.out.println(result == 2 ? "Successful insertion!" : "Insertion failure");
   }
 
