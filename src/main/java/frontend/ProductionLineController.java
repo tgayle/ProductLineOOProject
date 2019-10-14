@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -20,7 +21,6 @@ import misc.SuppressFBWarnings;
 import model.ItemType;
 import model.Product;
 import model.audio.AudioPlayer;
-import model.production.Production;
 import model.production.ProductionWithProduct;
 import model.video.MonitorType;
 import model.video.MoviePlayer;
@@ -39,6 +39,7 @@ public class ProductionLineController {
   public TableColumn<ProductionWithProduct, String> columnProductName;
   public TableColumn<ProductionWithProduct, Integer> columnQuantityProduced;
   public TableColumn<ProductionWithProduct, String> columnDateProduced;
+  public TableColumn<ProductionWithProduct, String> columnProductionSerialNumber;
   public TableView<ProductionWithProduct> productionLogTable;
 
   public TableColumn<Product, String> productListColumnName;
@@ -84,8 +85,9 @@ public class ProductionLineController {
   }
 
   private void prepareProductionLogTab() {
-    columnDateProduced.setCellValueFactory(new PropertyValueFactory<>("manufacturedOn"));
+    columnDateProduced.setCellValueFactory(new PropertyValueFactory<>("formattedManufacturedDate"));
     columnProductName.setCellValueFactory(new PropertyValueFactory<>("productSimpleName"));
+    columnProductionSerialNumber.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
     columnQuantityProduced.setCellValueFactory(new PropertyValueFactory<>("quantity"));
     updateProductionLogTab();
   }
@@ -96,6 +98,9 @@ public class ProductionLineController {
     produceQuantityCBox.getItems().addAll(numbers); // Add 1-10 to ComboBox
     produceQuantityCBox.setEditable(true); // Allow users to enter their own quantities
     produceQuantityCBox.getSelectionModel().selectFirst(); // Select first item in list
+
+    // User can only produce one product a a time.
+    produceProductList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
     updateProduceTab();
   }
@@ -144,7 +149,10 @@ public class ProductionLineController {
     }
 
     int result = database.insertProduct(product);
-    System.out.println(result);
+    updateProductionLineTab();
+    pdLnManufacturerText.clear();
+    pdLnProductNameText.clear();
+    System.out.println(result == 2 ? "Successful insertion!" : "Insertion failure");
   }
 
   /**
@@ -155,15 +163,20 @@ public class ProductionLineController {
    */
   public void produceRecordBtnClick(ActionEvent actionEvent) {
     String quantity = produceQuantityCBox.getValue();
+    Product product = produceProductList.getSelectionModel().getSelectedItem();
+    ProductionWithProduct production = new ProductionWithProduct(product,
+        Integer.parseInt(quantity), LocalDateTime.now());
 
-    List<Production> productions = produceProductList.getSelectionModel().getSelectedItems()
-        .stream()
-        .map(item -> {
-          return new Production(item.getId(), Integer.parseInt(quantity), LocalDateTime.now());
-        }).collect(Collectors.toList());
-
-    database.recordProductions(productions);
-    produceProductList.getSelectionModel().clearSelection();
+    try {
+      int count = database.getItemTypeCount(product.getItemType());
+      production.generateSerialNumber(count + 1);
+      database.recordProduction(production);
+      produceProductList.getSelectionModel().clearSelection();
+    } catch (SQLException e) {
+      System.out
+          .println("There was an issue recording the production. (Error generating serial number)");
+      e.printStackTrace();
+    }
   }
 
   private void updateProductionLogTab() {

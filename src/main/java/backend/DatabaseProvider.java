@@ -9,7 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import model.ItemType;
 import model.Product;
 import model.Widget;
 import model.production.Production;
@@ -147,12 +149,13 @@ public class DatabaseProvider {
     try {
       connection.setAutoCommit(false);
       String insertionQuery =
-          "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, QUANTITY, DATE_PRODUCED) VALUES (?, ?, ?)";
+          "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, QUANTITY, DATE_PRODUCED, SERIAL_NUM) VALUES (?, ?, ?, ?)";
       try (PreparedStatement stmnt = connection.prepareStatement(insertionQuery)) {
         for (Production production : productions) {
           stmnt.setInt(1, production.getProductId());
           stmnt.setInt(2, production.getQuantity());
           stmnt.setTimestamp(3, Timestamp.valueOf(production.getManufacturedOn()));
+          stmnt.setString(4, production.getSerialNumber());
           stmnt.execute();
         }
       }
@@ -191,7 +194,7 @@ public class DatabaseProvider {
 
   public List<ProductionWithProduct> getAllProductionsWithItems() throws SQLException {
     final String getProductsWithProductQuery =
-        "SELECT PR.PRODUCTION_ID, PR.PRODUCT_ID, PR.QUANTITY, PR.DATE_PRODUCED, P.NAME, P.MANUFACTURER, P.TYPE\n"
+        "SELECT PR.PRODUCTION_ID, PR.PRODUCT_ID, PR.QUANTITY, PR.DATE_PRODUCED, P.NAME, P.MANUFACTURER, P.TYPE, PR.SERIAL_NUM\n"
             + "FROM PRODUCTIONRECORD PR\n"
             + "JOIN PRODUCT P on (PR.PRODUCT_ID=P.ID)";
 
@@ -205,13 +208,34 @@ public class DatabaseProvider {
       String productName = rows.getString(5);
       String manufacturer = rows.getString(6);
       String productType = rows.getString(7);
+      String serialNumber = rows.getString(8);
 
       Product productProduced = new Widget(productId, productName, productType, manufacturer);
       productions.add(
-          new ProductionWithProduct(productionId, quantity, dateProduced.toLocalDateTime(),
+          new ProductionWithProduct(productionId, quantity, serialNumber,
+              dateProduced.toLocalDateTime(),
               productProduced));
     }
     rows.close();
     return productions;
+  }
+
+  /**
+   * Gets the number of products currently stored with the given type
+   *
+   * @param type The ItemType to count
+   * @return the number of items with the given type
+   */
+  public int getItemTypeCount(ItemType type) throws SQLException {
+    PreparedStatement query = connection
+        .prepareStatement("SELECT COUNT(*) FROM PRODUCT WHERE TYPE=?");
+    query.setString(1, type.getCode());
+    ResultSet resultSet = query.executeQuery();
+    resultSet.next();
+    return resultSet.getInt(1);
+  }
+
+  public void recordProduction(Production... productions) {
+    recordProductions(Arrays.asList(productions));
   }
 }

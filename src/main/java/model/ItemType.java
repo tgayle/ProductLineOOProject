@@ -16,4 +16,13 @@ public enum ItemType {
     return code;
   }
 
+  public static ItemType fromCode(String code) {
+    for (ItemType type : ItemType.values()) {
+      if (code.equals(type.code)) {
+        return type;
+      }
+    }
+    throw new RuntimeException("Tried to get an ItemType that doesn't exist: " + code);
+  }
+
 }

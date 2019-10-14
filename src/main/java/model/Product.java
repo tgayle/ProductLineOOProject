@@ -17,7 +17,7 @@ public abstract class Product implements Item {
   }
 
   public ItemType getItemType() {
-    return ItemType.valueOf(type);
+    return ItemType.fromCode(type);
   }
 
   public void setType(String type) {
@@ -56,6 +56,6 @@ public abstract class Product implements Item {
   }
 
   public String getSimpleName() {
-    return String.format("%s %s (%s)", manufacturer, name, type);
+    return String.format("%s %s (%s)", manufacturer, name, getItemType());
   }
 }
