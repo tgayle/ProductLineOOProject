@@ -134,7 +134,7 @@ public class DatabaseProvider {
         String name = rows.getString(2);
         String type = rows.getString(3);
         String manufacturer = rows.getString(4);
-        products.add(new Widget(id, name, type, manufacturer));
+        products.add(new Widget(id, name, ItemType.fromCode(type), manufacturer));
       }
     }
     return products;
@@ -224,7 +224,8 @@ public class DatabaseProvider {
       String productType = rows.getString(7);
       String serialNumber = rows.getString(8);
 
-      Product productProduced = new Widget(productId, productName, productType, manufacturer);
+      Product productProduced = new Widget(productId, productName, ItemType.fromCode(productType),
+          manufacturer);
       productions.add(
           new ProductionWithProduct(productionId, quantity, serialNumber,
               dateProduced.toLocalDateTime(),

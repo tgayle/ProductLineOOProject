@@ -3,7 +3,7 @@ package model;
 public abstract class Product implements Item {
 
   protected int id;
-  protected String type;
+  protected ItemType itemType;
   protected String manufacturer;
   protected String name;
 
@@ -13,15 +13,15 @@ public abstract class Product implements Item {
   }
 
   public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
+    return itemType.toString();
   }
 
   public ItemType getItemType() {
-    return ItemType.fromCode(type);
+    return itemType;
+  }
+
+  public void setItemType(ItemType itemType) {
+    this.itemType = itemType;
   }
 
   @Override
@@ -52,7 +52,7 @@ public abstract class Product implements Item {
   @Override
   public String toString() {
     String format = "Name: %s\nManufacturer: %s\nType: %s";
-    return String.format(format, name, manufacturer, type);
+    return String.format(format, name, manufacturer, getType());
   }
 
   public String getSimpleName() {

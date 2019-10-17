@@ -21,7 +21,7 @@ public class MoviePlayer extends Product implements MultimediaControl {
     super(name, manufacturer);
     this.screen = screen;
     this.monitorType = monitorType;
-    type = ItemType.Visual.toString();
+    setItemType(ItemType.Visual);
   }
 
   @Override

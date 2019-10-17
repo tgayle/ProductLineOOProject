@@ -10,9 +10,9 @@ public class Widget extends Product {
     super(name, manufacturer);
   }
 
-  public Widget(String name, String manufacturer, String type) {
+  public Widget(String name, String manufacturer, ItemType type) {
     super(name, manufacturer);
-    this.type = type;
+    itemType = type;
   }
 
   /**
@@ -23,20 +23,9 @@ public class Widget extends Product {
    * @param type The type of the product
    * @param manufacturer The product's manufacturer.
    */
-  public Widget(int id, String name, String type, String manufacturer) {
-    super(name, manufacturer);
-    this.id = id;
-    this.type = type;
-  }
-
-  /**
-   * Creates a basic product.
-   *
-   * @see #Widget(int, String, String, String)
-   */
   public Widget(int id, String name, ItemType type, String manufacturer) {
     super(name, manufacturer);
     this.id = id;
-    this.type = type.getCode();
+    this.itemType = type;
   }
 }

@@ -22,7 +22,7 @@ public class AudioPlayer extends Product implements MultimediaControl {
     super(name, manufacturer);
     this.supportedAudioFormats = supportedAudioFormats;
     this.supportedPlaylistFormats = supportedPlaylistFormats;
-    this.type = ItemType.Audio.toString();
+    setItemType(ItemType.Audio);
   }
 
   public AudioPlayer(String name, String manufacturer) {
