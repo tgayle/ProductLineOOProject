@@ -1,104 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXListView?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <TabPane
   xmlns:fx="http://javafx.com/fxml/1"
   prefHeight="435.0"
   prefWidth="390.0"
   xmlns="http://javafx.com/javafx/8.0.161"
-  fx:controller="frontend.ProductionLineController"
+  fx:controller="frontend.RootController"
   fx:id="mainTabPane">
 
   <Tab text="Product Line" fx:id="productionLineTab">
-    <content>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
-        <children>
-          <GridPane layoutX="93.0" layoutY="33.0" prefHeight="125.0" prefWidth="200.0">
-            <children>
-              <ChoiceBox GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="150.0"
-                fx:id="pdLnItemTypeCBox"/>
-              <JFXTextField GridPane.columnIndex="1" GridPane.rowIndex="1"
-                fx:id="pdLnManufacturerText"/>
-              <JFXTextField GridPane.columnIndex="1" fx:id="pdLnProductNameText"/>
-              <Label GridPane.rowIndex="2" text="Item Type"/>
-              <Label GridPane.rowIndex="1" text="Manufacturer"/>
-              <Label text="Product Name"/>
-            </children>
-            <columnConstraints>
-              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-            </columnConstraints>
-            <rowConstraints>
-              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            </rowConstraints>
-          </GridPane>
-          <JFXButton layoutX="229.0" layoutY="174.0" onAction="#addProductBtnClick"
-            text="Add Product"/>
-          <Label layoutX="3.0" layoutY="201.0" text="Existing Products"/>
-          <TableView layoutX="3.0" layoutY="228.0" prefHeight="174.0" prefWidth="385.0"
-            fx:id="productListTable">
-            <columns>
-              <TableColumn prefWidth="154.0" text="Name" fx:id="productListColumnName"/>
-              <TableColumn prefWidth="77.0" text="Type" fx:id="productListColumnType"/>
-              <TableColumn prefWidth="150.0" text="Manufacturer" fx:id="productListManufacturer"/>
-            </columns>
-          </TableView>
-        </children>
-        <padding>
-          <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
-        </padding>
-      </AnchorPane>
-    </content>
+    <fx:include source="productline/productline_tab.fxml"/>
   </Tab>
 
   <Tab text="Produce" fx:id="produceTab">
-    <AnchorPane>
-      <children>
-        <JFXButton layoutX="238.0" layoutY="287.0" onAction="#produceRecordBtnClick"
-          text="Record Production"/>
-        <JFXComboBox layoutX="133.0" layoutY="238.0" fx:id="produceQuantityCBox"/>
-        <JFXListView layoutY="49.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity"
-          prefHeight="178.0" prefWidth="390.0"
-          fx:id="produceProductList"/>
-        <Label layoutX="6.0" layoutY="20.0" text="Choose Product"/>
-        <Label layoutX="14.0" layoutY="243.0" text="Choose Quantity"/>
-      </children>
-    </AnchorPane>
-
+    <fx:include source="produce/produce_tab.fxml"/>
   </Tab>
 
-  <Tab text="Production Log" fx:id="productionLogTab">
-    <content>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
-        <children>
-          <TableView layoutY="3.0" prefHeight="391.0" prefWidth="390.0" fx:id="productionLogTable">
-            <columns>
-              <TableColumn prefWidth="75.0" text="Product" fx:id="columnProductName"/>
-              <TableColumn prefWidth="75.0" text="Quantity" fx:id="columnQuantityProduced"/>
-              <TableColumn prefWidth="75.0" text="Serial Number"
-                fx:id="columnProductionSerialNumber"/>
-              <TableColumn prefWidth="75.0" text="Date Produced" fx:id="columnDateProduced"/>
-            </columns>
-          </TableView>
-        </children>
-      </AnchorPane>
-    </content>
+  <Tab text="ProductionRecord Log" fx:id="productionLogTab">
+    <fx:include source="productionlog/productionlog_tab.fxml"/>
 
   </Tab>
 </TabPane>
