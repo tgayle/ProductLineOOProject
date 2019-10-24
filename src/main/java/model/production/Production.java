@@ -3,12 +3,14 @@ package model.production;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import misc.Util;
+import model.Product;
 
 /**
  * A record of production containing information on the product produced, the amount produced, and
  * when this production was completed.
  */
-public class Production {
+public class Production implements Comparable {
 
   protected int productionId; // id
   protected int productId;
@@ -118,10 +120,34 @@ public class Production {
     return manufacturedOn.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM));
   }
 
+  /**
+   * Generates a serial number for a product.
+   *
+   * @param uuid The uuid that will be assigned to this production. The next
+   */
+  public void generateSerialNumber(Product product, int uuid) {
+    String manufacturer = product.getManufacturer();
+    String manufacturerPrefix =
+        manufacturer.length() > 3 ? manufacturer.substring(0, 3) : manufacturer;
+    String paddedUuid = Util.padLeft(String.valueOf(uuid), 5, "0");
+    String serialNum = manufacturerPrefix + product.getItemType().getCode() + paddedUuid;
+
+    setSerialNumber(serialNum);
+  }
+
   @Override
   public String toString() {
     String formatter = "Production Num: %s\n Product ID: %s \nSerial Num: %s \nDate: %s";
     return String.format(
         formatter, productionId, productId, serialNumber, getFormattedManufacturedDate());
+  }
+
+  @Override
+  public int compareTo(Object o) {
+    if (o instanceof Production) {
+      return this.serialNumber.compareTo(((Production) o).serialNumber);
+    }
+
+    return 0;
   }
 }

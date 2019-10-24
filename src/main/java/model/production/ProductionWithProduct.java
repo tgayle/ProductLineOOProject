@@ -1,7 +1,6 @@
 package model.production;
 
 import java.time.LocalDateTime;
-import misc.Util;
 import model.Product;
 
 public class ProductionWithProduct extends Production {
@@ -53,6 +52,10 @@ public class ProductionWithProduct extends Production {
     setProduct(product);
   }
 
+  public void generateSerialNumber(int uuid) {
+    super.generateSerialNumber(product, uuid);
+  }
+
   public Product getProduct() {
     return product;
   }
@@ -60,21 +63,6 @@ public class ProductionWithProduct extends Production {
   public void setProduct(Product product) {
     this.product = product;
     this.productSimpleName = product.getSimpleName();
-  }
-
-  /**
-   * Generates a serial number for a product.
-   *
-   * @param uuid The uuid that will be assigned to this production. The next
-   */
-  public void generateSerialNumber(int uuid) {
-    String manufacturer = product.getManufacturer();
-    String manufacturerPrefix =
-        manufacturer.length() > 3 ? manufacturer.substring(0, 3) : manufacturer;
-    String paddedUuid = Util.padLeft(String.valueOf(uuid), 5, "0");
-    String serialNum = manufacturerPrefix + product.getItemType().getCode() + paddedUuid;
-
-    setSerialNumber(serialNum);
   }
 
   public String getProductSimpleName() {

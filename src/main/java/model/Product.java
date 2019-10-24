@@ -1,6 +1,6 @@
 package model;
 
-public abstract class Product implements Item {
+public abstract class Product implements Item, Comparable {
 
   protected int id;
   protected ItemType itemType;
@@ -57,5 +57,14 @@ public abstract class Product implements Item {
 
   public String getSimpleName() {
     return String.format("%s %s (%s)", manufacturer, name, getItemType());
+  }
+
+  @Override
+  public int compareTo(Object o) {
+    if (o instanceof Product) {
+      return Integer.compare(this.id, ((Product) o).id);
+    }
+
+    return 0;
   }
 }
