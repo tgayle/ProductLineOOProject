@@ -13,7 +13,7 @@
 
   <children>
     <JFXButton layoutX="238.0" layoutY="287.0" onAction="#produceRecordBtnClick"
-      text="Record ProductionRecord"/>
+      text="Record Production"/>
     <JFXComboBox layoutX="133.0" layoutY="238.0" fx:id="produceQuantityCBox"/>
     <JFXListView layoutY="49.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity"
       prefHeight="178.0" prefWidth="390.0"
