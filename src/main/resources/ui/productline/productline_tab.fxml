@@ -12,10 +12,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <AnchorPane
-  xmlns="http://javafx.com/javafx"
   xmlns:fx="http://javafx.com/fxml"
-  fx:id="productLineTabRoot"
-  fx:controller="frontend.screens.productline.ProductLineController">
+  xmlns="http://javafx.com/javafx"
+  fx:controller="frontend.screens.productline.ProductLineController"
+  fx:id="productLineTabRoot">
 
   <children>
     <GridPane layoutX="93.0" layoutY="33.0" prefHeight="125.0" prefWidth="200.0">

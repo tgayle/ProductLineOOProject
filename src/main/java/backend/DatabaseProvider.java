@@ -202,6 +202,7 @@ public class DatabaseProvider {
 
   /**
    * Returns a list of productions with their associated items.
+   *
    * @return a list of productions and the items produced.
    * @throws SQLException if there is an issue communicating with the database.
    */

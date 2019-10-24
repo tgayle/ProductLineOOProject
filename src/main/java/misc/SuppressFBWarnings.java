@@ -4,8 +4,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * A helper annotation for identifying things that should be ignored by FindBugs
- * Copied from @link{https://sourceforge.net/p/findbugs/feature-requests/298/#5e88}
+ * A helper annotation for identifying things that should be ignored by FindBugs Copied from
+ * @link{https://sourceforge.net/p/findbugs/feature-requests/298/#5e88}
  */
 @Retention(RetentionPolicy.CLASS)
 public @interface SuppressFBWarnings {

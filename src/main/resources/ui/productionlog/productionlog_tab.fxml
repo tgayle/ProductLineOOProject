@@ -4,10 +4,10 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane
-  xmlns="http://javafx.com/javafx"
   xmlns:fx="http://javafx.com/fxml"
-  fx:id="productionLogRoot"
-  fx:controller="frontend.screens.productionlog.ProductionLogController">
+  xmlns="http://javafx.com/javafx"
+  fx:controller="frontend.screens.productionlog.ProductionLogController"
+  fx:id="productionLogRoot">
   <children>
     <TableView layoutY="3.0" prefHeight="391.0" prefWidth="390.0" fx:id="productionLogTable">
       <columns>

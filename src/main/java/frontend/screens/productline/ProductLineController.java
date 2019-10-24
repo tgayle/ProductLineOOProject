@@ -22,26 +22,23 @@ import model.video.Screen;
 public class ProductLineController extends BaseController {
 
   public static final String controllerId = "ProductLine";
-
+  private static ProductLineController controller;
   public JFXTextField pdLnProductNameText;
   public JFXTextField pdLnManufacturerText;
   public ChoiceBox<String> pdLnItemTypeCBox;
-
   public TableColumn<Product, String> productListColumnName;
   public TableColumn<Product, String> productListColumnType;
   public TableColumn<Product, String> productListManufacturer;
   public TableView<Product> productListTable;
   public AnchorPane productLineTabRoot;
 
-  private static ProductLineController controller;
-
-  public static ProductLineController get() {
-    return controller;
-  }
-
   public ProductLineController() {
     super(controllerId);
     controller = this;
+  }
+
+  public static ProductLineController get() {
+    return controller;
   }
 
   /**

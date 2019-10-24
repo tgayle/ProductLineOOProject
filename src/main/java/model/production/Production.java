@@ -50,6 +50,7 @@ public class Production {
   /**
    * Creates a production record given a product id, a quantity, and the date and time this
    * production was processed.
+   *
    * @see #Production(int, int, int, LocalDateTime)
    */
   public Production(int productId, int quantity, LocalDateTime manufacturedOn) {
@@ -60,6 +61,7 @@ public class Production {
 
   /**
    * Creates a production record .
+   *
    * @see #Production(int, int, int, LocalDateTime)
    */
   public Production(int productionId, int productId, int quantity, String serialNumber,

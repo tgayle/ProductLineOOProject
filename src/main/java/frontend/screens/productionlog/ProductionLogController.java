@@ -13,7 +13,7 @@ import model.production.ProductionWithProduct;
 public class ProductionLogController extends BaseController {
 
   public static final String controllerId = "ProdLog";
-
+  private static ProductionLogController controller;
   public TableColumn<ProductionWithProduct, String> columnProductName;
   public TableColumn<ProductionWithProduct, Integer> columnQuantityProduced;
   public TableColumn<ProductionWithProduct, String> columnDateProduced;
@@ -21,15 +21,13 @@ public class ProductionLogController extends BaseController {
   public TableView<ProductionWithProduct> productionLogTable;
   public AnchorPane productionLogRoot;
 
-  private static ProductionLogController controller;
-
-  public static ProductionLogController get() {
-    return controller;
-  }
-
   public ProductionLogController() {
     super(controllerId);
     controller = this;
+  }
+
+  public static ProductionLogController get() {
+    return controller;
   }
 
   public void prepare() {

@@ -18,20 +18,18 @@ import model.production.ProductionWithProduct;
 public class ProduceController extends BaseController {
 
   public static final String controllerId = "Produce";
-
+  private static ProduceController controller;
   public JFXComboBox<String> produceQuantityCBox;
   public JFXListView<Product> produceProductList;
   public AnchorPane produceTabRoot;
 
-  private static ProduceController controller;
-
-  public static ProduceController get() {
-    return controller;
-  }
-
   public ProduceController() {
     super(controllerId);
     controller = this;
+  }
+
+  public static ProduceController get() {
+    return controller;
   }
 
   public void prepare() {
