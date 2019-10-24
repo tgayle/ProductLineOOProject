@@ -19,22 +19,6 @@ public class RootController extends BaseController {
     super(controllerId);
   }
 
-  //  /**
-//   * Run when this Controller is first created. Populates ComboBoxes and prepares the UI for user
-//   * interaction.
-//   */
-//  @SuppressFBWarnings(
-//      value = {
-//          "UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD",
-//          "NP_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"
-//      },
-//      justification
-//          = "These fields are instantiated by the FXMLLoader, which FindBugs does not detect.")
-//  public void initialize() {
-//
-//
-//  }
-
   @Override
   public void prepare() {
     System.out.println("Controller started!");
