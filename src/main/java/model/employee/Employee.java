@@ -67,4 +67,16 @@ public class Employee implements Comparable {
 
     return 0;
   }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    } else if (object instanceof Employee) {
+      Employee objAsEmployee = (Employee) object;
+      return this.getCode().equals(objAsEmployee.code) &&
+          this.getName().equals(objAsEmployee.name);
+    }
+    return false;
+  }
 }

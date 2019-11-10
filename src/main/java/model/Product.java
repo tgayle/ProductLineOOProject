@@ -51,7 +51,7 @@ public abstract class Product implements Item, Comparable {
 
   @Override
   public String toString() {
-    String format = "Name: %s\nManufacturer: %s\nType: %s";
+    String format = "Name: %s%nManufacturer: %s%nType: %s";
     return String.format(format, name, manufacturer, getType());
   }
 

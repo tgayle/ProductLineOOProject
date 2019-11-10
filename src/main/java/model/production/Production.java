@@ -137,7 +137,7 @@ public class Production implements Comparable {
 
   @Override
   public String toString() {
-    String formatter = "Production Num: %s\n Product ID: %s \nSerial Num: %s \nDate: %s";
+    String formatter = "Production Num: %s%n Product ID: %s %nSerial Num: %s %nDate: %s";
     return String.format(
         formatter, productionId, productId, serialNumber, getFormattedManufacturedDate());
   }
@@ -149,5 +149,21 @@ public class Production implements Comparable {
     }
 
     return 0;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    } else if (obj instanceof Production) {
+      Production objAsProd = (Production) obj;
+
+      return this.serialNumber.equals(objAsProd.serialNumber) &&
+          this.manufacturedOn.equals(objAsProd.manufacturedOn) &&
+          this.productId == objAsProd.productId &&
+          this.quantity == objAsProd.quantity &&
+          this.productionId == objAsProd.productionId;
+    }
+    return false;
   }
 }

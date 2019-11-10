@@ -242,10 +242,10 @@ public class DatabaseProvider {
    * @param type The ItemType to count
    * @return the number of items with the given type
    */
-  public int getItemTypeCount(ItemType type) throws SQLException {
+  public int getProductItemTypeCount(ItemType type) throws SQLException {
     PreparedStatement query = connection
-        .prepareStatement("SELECT COUNT(*) FROM PRODUCT WHERE TYPE=?");
-    query.setString(1, type.getCode());
+        .prepareStatement("SELECT COUNT(*) FROM PRODUCTIONRECORD WHERE SERIAL_NUM LIKE ?");
+    query.setString(1, "%" + type.getCode() + "%");
     ResultSet resultSet = query.executeQuery();
     resultSet.next();
     return resultSet.getInt(1);
