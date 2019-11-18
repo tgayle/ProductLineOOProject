@@ -52,10 +52,6 @@ public class ProductionWithProduct extends Production {
     setProduct(product);
   }
 
-  public void generateSerialNumber(int uuid) {
-    super.generateSerialNumber(product, uuid);
-  }
-
   public Product getProduct() {
     return product;
   }

@@ -14,10 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import misc.SuppressFBWarnings;
 import model.ItemType;
 import model.Product;
-import model.audio.AudioPlayer;
-import model.video.MonitorType;
-import model.video.MoviePlayer;
-import model.video.Screen;
+import model.Widget;
 
 public class ProductLineController extends BaseController {
 
@@ -51,26 +48,12 @@ public class ProductLineController extends BaseController {
       justification
           = "These fields are instantiated by the FXMLLoader, which FindBugs does not detect.")
   public void addProductBtnClick(ActionEvent evt) {
-    Product product = null;
     String manufacturer = pdLnManufacturerText.getText();
     String productName = pdLnProductNameText.getText();
     String cboxItemType = pdLnItemTypeCBox.getValue();
     ItemType itemType = ItemType.valueOf(cboxItemType);
 
-    switch (itemType) {
-      case Audio:
-      case AudioMobile:
-        // TODO: Take in audio specification or screen type from user.
-        product = new AudioPlayer(productName, manufacturer);
-        break;
-      case Visual:
-      case VisualMobile:
-        product = new MoviePlayer(productName, manufacturer, new Screen("1920x1080", 60, 2),
-            MonitorType.LCD);
-        break;
-      default:
-        throw new RuntimeException("Unhandled ItemType: " + itemType + " -> " + cboxItemType);
-    }
+    Product product = new Widget(productName, manufacturer, itemType);
 
     pdLnManufacturerText.clear();
     pdLnProductNameText.clear();

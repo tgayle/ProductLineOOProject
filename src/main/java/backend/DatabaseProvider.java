@@ -106,12 +106,16 @@ public class DatabaseProvider {
    * @return 1 if a product was updated, 2 if a new product was created, -1 if there was an error.
    */
   public int insertProduct(Product product) {
-    String insertProductQuery = "INSERT INTO `Product`(type, manufacturer, name) VALUES (?, ?, ?)";
+    String insertProductQuery = "INSERT INTO `Product`(type, manufacturer, name, serialnum) VALUES (?, ?, ?, ?)";
 
     try (PreparedStatement preparedInsert = connection.prepareStatement(insertProductQuery)) {
+      int count = getProductItemTypeCount(product.getItemType());
+      product.generateSerialNumber(count + 1);
       preparedInsert.setString(1, product.getItemType().getCode());
       preparedInsert.setString(2, product.getManufacturer());
       preparedInsert.setString(3, product.getName());
+      preparedInsert.setString(4, product.getSerialNumber());
+
       return preparedInsert.execute() ? 1 : 2;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -134,7 +138,11 @@ public class DatabaseProvider {
         String name = rows.getString(2);
         String type = rows.getString(3);
         String manufacturer = rows.getString(4);
-        products.add(new Widget(id, name, ItemType.fromCode(type), manufacturer));
+        String serialNumber = rows.getString(5);
+
+        Product thisProduct = new Widget(id, name, ItemType.fromCode(type), manufacturer);
+        thisProduct.setSerialNumber(serialNumber);
+        products.add(thisProduct);
       }
     }
     return products;
@@ -150,14 +158,13 @@ public class DatabaseProvider {
       connection.setAutoCommit(false);
       String insertionQuery =
           "INSERT INTO PRODUCTIONRECORD "
-              + "(PRODUCT_ID, QUANTITY, DATE_PRODUCED, SERIAL_NUM) VALUES (?, ?, ?, ?)";
+              + "(PRODUCT_ID, QUANTITY, DATE_PRODUCED) VALUES (?, ?, ?)";
 
       try (PreparedStatement stmnt = connection.prepareStatement(insertionQuery)) {
         for (Production production : productions) {
           stmnt.setInt(1, production.getProductId());
           stmnt.setInt(2, production.getQuantity());
           stmnt.setTimestamp(3, Timestamp.valueOf(production.getManufacturedOn()));
-          stmnt.setString(4, production.getSerialNumber());
           stmnt.execute();
         }
       }
@@ -209,7 +216,7 @@ public class DatabaseProvider {
   public List<ProductionWithProduct> getAllProductionsWithItems() throws SQLException {
     final String getProductsWithProductQuery =
         "SELECT PR.PRODUCTION_ID, PR.PRODUCT_ID, PR.QUANTITY, PR.DATE_PRODUCED,"
-            + " P.NAME, P.MANUFACTURER, P.TYPE, PR.SERIAL_NUM\n"
+            + " P.NAME, P.MANUFACTURER, P.TYPE, P.SERIALNUM\n"
             + "FROM PRODUCTIONRECORD PR\n"
             + "JOIN PRODUCT P on (PR.PRODUCT_ID=P.ID)";
 
@@ -227,6 +234,9 @@ public class DatabaseProvider {
 
       Product productProduced = new Widget(productId, productName, ItemType.fromCode(productType),
           manufacturer);
+
+      productProduced.setSerialNumber(serialNumber);
+
       productions.add(
           new ProductionWithProduct(productionId, quantity, serialNumber,
               dateProduced.toLocalDateTime(),
@@ -244,7 +254,7 @@ public class DatabaseProvider {
    */
   public int getProductItemTypeCount(ItemType type) throws SQLException {
     PreparedStatement query = connection
-        .prepareStatement("SELECT COUNT(*) FROM PRODUCTIONRECORD WHERE SERIAL_NUM LIKE ?");
+        .prepareStatement("SELECT COUNT(*) FROM PRODUCT WHERE SERIALNUM LIKE ?");
     query.setString(1, "%" + type.getCode() + "%");
     ResultSet resultSet = query.executeQuery();
     resultSet.next();

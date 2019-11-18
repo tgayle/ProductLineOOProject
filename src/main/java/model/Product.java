@@ -1,15 +1,47 @@
 package model;
 
+import misc.Util;
+
 public abstract class Product implements Item, Comparable {
 
   protected int id;
   protected ItemType itemType;
   protected String manufacturer;
   protected String name;
+  protected String serialNumber;
 
   public Product(String name, String manufacturer) {
     this.name = name;
     this.manufacturer = manufacturer;
+  }
+
+  public Product(String name, String manufacturer, String serialNumber) {
+    this.name = name;
+    this.manufacturer = manufacturer;
+    this.serialNumber = serialNumber;
+  }
+
+  /**
+   * Generates a serial number for a product.
+   *
+   * @param uuid The uuid that will be assigned to this production. The next
+   */
+  public void generateSerialNumber(int uuid) {
+    String manufacturerPrefix =
+        manufacturer.length() > 3 ? manufacturer.substring(0, 3) : manufacturer;
+
+    String paddedUuid = Util.padLeft(String.valueOf(uuid), 5, "0");
+    String serialNum = manufacturerPrefix + getItemType().getCode() + paddedUuid;
+
+    setSerialNumber(serialNum);
+  }
+
+  public String getSerialNumber() {
+    return serialNumber;
+  }
+
+  public void setSerialNumber(String serialNumber) {
+    this.serialNumber = serialNumber;
   }
 
   public String getType() {

@@ -17,7 +17,6 @@ public class ProductionLogController extends BaseController {
   public TableColumn<ProductionWithProduct, String> columnProductName;
   public TableColumn<ProductionWithProduct, Integer> columnQuantityProduced;
   public TableColumn<ProductionWithProduct, String> columnDateProduced;
-  public TableColumn<ProductionWithProduct, String> columnProductionSerialNumber;
   public TableView<ProductionWithProduct> productionLogTable;
   public AnchorPane productionLogRoot;
 
@@ -33,7 +32,6 @@ public class ProductionLogController extends BaseController {
   public void prepare() {
     columnDateProduced.setCellValueFactory(new PropertyValueFactory<>("formattedManufacturedDate"));
     columnProductName.setCellValueFactory(new PropertyValueFactory<>("productSimpleName"));
-    columnProductionSerialNumber.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
     columnQuantityProduced.setCellValueFactory(new PropertyValueFactory<>("quantity"));
   }
 

@@ -66,17 +66,8 @@ public class ProduceController extends BaseController {
       ProductionWithProduct production = new ProductionWithProduct(product,
           Integer.parseInt(quantity), LocalDateTime.now());
 
-      try {
-        int count = database.getProductItemTypeCount(product.getItemType());
-        production.generateSerialNumber(count + 1);
-        database.recordProduction(production);
-        produceProductList.getSelectionModel().clearSelection();
-      } catch (SQLException e) {
-        System.out
-            .println(
-                "There was an issue recording the production. (Error generating serial number)");
-        e.printStackTrace();
-      }
+      database.recordProduction(production);
+      produceProductList.getSelectionModel().clearSelection();
     }
 
   }
