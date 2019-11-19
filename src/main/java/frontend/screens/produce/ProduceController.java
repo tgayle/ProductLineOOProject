@@ -32,6 +32,9 @@ public class ProduceController extends BaseController {
     return controller;
   }
 
+  /**
+   * Prepares the Product tab's ComboBox and ProductList.
+   */
   public void prepare() {
     List<String> numbers = IntStream.range(1, 11).boxed().map(Object::toString)
         .collect(Collectors.toList());
@@ -43,6 +46,9 @@ public class ProduceController extends BaseController {
     produceProductList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
   }
 
+  /**
+   * Updates the values of the tab's ProductList.
+   */
   public void update() {
     try {
       List<Product> allProducts = database.getAllProducts();

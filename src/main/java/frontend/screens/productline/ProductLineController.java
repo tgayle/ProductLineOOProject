@@ -62,6 +62,9 @@ public class ProductLineController extends BaseController {
     System.out.println(result == 2 ? "Successful insertion!" : "Insertion failure");
   }
 
+  /**
+   * Prepares the Product Line tab's ComboBox and TableView.
+   */
   public void prepare() {
     for (ItemType type : ItemType.values()) {
       pdLnItemTypeCBox.getItems().add(type.toString());
@@ -74,8 +77,10 @@ public class ProductLineController extends BaseController {
     productListManufacturer.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
   }
 
+  /**
+   * Updates the value of the tab's TableView with the products of the database.
+   */
   public void update() {
-    // TODO: Show items in database
     try {
       List<Product> allProducts = database.getAllProducts();
       productListTable.setItems(FXCollections.observableList(allProducts));

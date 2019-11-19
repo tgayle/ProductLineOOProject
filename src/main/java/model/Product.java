@@ -10,11 +10,23 @@ public abstract class Product implements Item, Comparable {
   protected String name;
   protected String serialNumber;
 
+  /**
+   * Creates a Product with an unspecified serialNumber.
+   *
+   * @see #Product(String, String, String)
+   */
   public Product(String name, String manufacturer) {
     this.name = name;
     this.manufacturer = manufacturer;
   }
 
+  /**
+   * Creates an instance of a product with a name, manufacturer, and serial number.
+   *
+   * @param name The name of the product
+   * @param manufacturer The product's manufacturer
+   * @param serialNumber The product's serial number.
+   */
   public Product(String name, String manufacturer, String serialNumber) {
     this.name = name;
     this.manufacturer = manufacturer;

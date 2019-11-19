@@ -106,7 +106,8 @@ public class DatabaseProvider {
    * @return 1 if a product was updated, 2 if a new product was created, -1 if there was an error.
    */
   public int insertProduct(Product product) {
-    String insertProductQuery = "INSERT INTO `Product`(type, manufacturer, name, serialnum) VALUES (?, ?, ?, ?)";
+    String insertProductQuery = "INSERT INTO "
+        + "`Product`(type, manufacturer, name, serialnum) VALUES (?, ?, ?, ?)";
 
     try (PreparedStatement preparedInsert = connection.prepareStatement(insertProductQuery)) {
       int count = getProductItemTypeCount(product.getItemType());

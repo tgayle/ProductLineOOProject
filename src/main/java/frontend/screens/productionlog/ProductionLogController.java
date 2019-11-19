@@ -29,12 +29,18 @@ public class ProductionLogController extends BaseController {
     return controller;
   }
 
+  /**
+   * Prepares the ProductionLog's TableView.
+   */
   public void prepare() {
     columnDateProduced.setCellValueFactory(new PropertyValueFactory<>("formattedManufacturedDate"));
     columnProductName.setCellValueFactory(new PropertyValueFactory<>("productSimpleName"));
     columnQuantityProduced.setCellValueFactory(new PropertyValueFactory<>("quantity"));
   }
 
+  /**
+   * Updates the Productions of the TableView.
+   */
   public void update() {
     try {
       List<ProductionWithProduct> allProductions = database.getAllProductionsWithItems();

@@ -74,8 +74,8 @@ public class Employee implements Comparable {
       return true;
     } else if (object instanceof Employee) {
       Employee objAsEmployee = (Employee) object;
-      return this.getCode().equals(objAsEmployee.code) &&
-          this.getName().equals(objAsEmployee.name);
+      return this.getCode().equals(objAsEmployee.code)
+          && this.getName().equals(objAsEmployee.name);
     }
     return false;
   }

@@ -133,11 +133,11 @@ public class Production implements Comparable {
     } else if (obj instanceof Production) {
       Production objAsProd = (Production) obj;
 
-      return this.serialNumber.equals(objAsProd.serialNumber) &&
-          this.manufacturedOn.equals(objAsProd.manufacturedOn) &&
-          this.productId == objAsProd.productId &&
-          this.quantity == objAsProd.quantity &&
-          this.productionId == objAsProd.productionId;
+      return this.serialNumber.equals(objAsProd.serialNumber)
+          && this.manufacturedOn.equals(objAsProd.manufacturedOn)
+          && this.productId == objAsProd.productId
+          && this.quantity == objAsProd.quantity
+          && this.productionId == objAsProd.productionId;
     }
     return false;
   }
