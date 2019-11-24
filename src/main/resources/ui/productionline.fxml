@@ -10,6 +10,10 @@
   fx:controller="frontend.RootController"
   fx:id="mainTabPane">
 
+  <Tab text="Employee" fx:id="employeeTab">
+    <fx:include source="employee/employee_tab.fxml"/>
+  </Tab>
+
   <Tab text="Product Line" fx:id="productionLineTab">
     <fx:include source="productline/productline_tab.fxml"/>
   </Tab>

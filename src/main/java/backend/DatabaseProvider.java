@@ -1,5 +1,7 @@
 package backend;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,6 +13,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 import model.ItemType;
 import model.Product;
 import model.Widget;
@@ -28,8 +31,23 @@ public class DatabaseProvider {
   private Connection connection;
 
   private DatabaseProvider() throws SQLException, ClassNotFoundException {
-    Class.forName("org.h2.Driver");
-    connection = DriverManager.getConnection(DB_PATH);
+    File databaseAuthFile = new File("./src/main/resources/db/DATABASE_LOGIN");
+    if (!databaseAuthFile.exists()) {
+      throw new RuntimeException("No database password was found (DATABASE_LOGIN)");
+    }
+
+    try {
+      Scanner loginReader = new Scanner(databaseAuthFile);
+      String username = loginReader.nextLine();
+      String encryptedPassword = loginReader.nextLine();
+      String decryptedPassword = new StringBuilder(encryptedPassword).reverse().toString();
+
+      Class.forName("org.h2.Driver");
+      connection = DriverManager.getConnection(DB_PATH, username, decryptedPassword);
+      System.out.println("Password successfully retrieved and 'decrypted.'");
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
