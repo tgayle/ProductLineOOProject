@@ -1,82 +1,67 @@
 package model.employee;
 
-import java.util.Scanner;
+import java.util.regex.Pattern;
 
-public class Employee implements Comparable {
-
+public class Employee {
   private StringBuilder name;
-  private String code;
+  private String username;
+  private String password;
+  private String email;
 
-  public Employee() {
-    setName();
-  }
+  private static final Pattern lowercasePattern = Pattern.compile("[a-z]");
+  private static final Pattern uppercasePattern = Pattern.compile("[A-Z]");
+  private static final Pattern specialCharPattern = Pattern.compile("\\W");
 
-  public StringBuilder getName() {
-    return name;
-  }
+  public Employee(String fullName, String password) {
+    this.name = new StringBuilder(fullName);
 
-  public String getCode() {
-    return code;
-  }
-
-  /**
-   * Prepares the user's code from their full name.
-   */
-  private void setName() {
-    String fullName = inputName().trim();
-    name = new StringBuilder(fullName);
-
-    if (checkName(name)) {
-      createEmployeeCode(name);
+    if (checkName(fullName)) {
+      setUsername(fullName);
+      setEmail(fullName);
     } else {
-      code = "guest";
-    }
-  }
-
-  /**
-   * Generates an employee code, which is equal to the user's first initial and their last name.
-   *
-   * @param name The name a code will be generated from.
-   */
-  private void createEmployeeCode(StringBuilder name) {
-    // Grabs the first character of the string then grabs everything after the first space.
-    code = name.charAt(0) + name.substring(name.indexOf(" ") + 1);
-  }
-
-  private String inputName() {
-    System.out.println("Enter your full name: ");
-    return new Scanner(System.in).nextLine();
-  }
-
-  /**
-   * Returns true if the supplied name contains a space.
-   *
-   * @param name The name or input string to scan.
-   * @return true if a space is in the given string, else false.
-   */
-  private boolean checkName(StringBuilder name) {
-    return name.indexOf(" ") != -1;
-  }
-
-  @Override
-  public int compareTo(Object o) {
-    if (o instanceof Employee) {
-      Employee objectAsEmployee = (Employee) o;
-      return this.name.toString().compareTo(objectAsEmployee.name.toString());
+      username = "default";
+      email = "user@oracleacademy.Test";
     }
 
-    return 0;
+    isValidPassword(password);
   }
 
-  @Override
-  public boolean equals(Object object) {
-    if (this == object) {
-      return true;
-    } else if (object instanceof Employee) {
-      Employee objAsEmployee = (Employee) object;
-      return this.getCode().equals(objAsEmployee.code)
-          && this.getName().equals(objAsEmployee.name);
+
+  private void setUsername(String fullName) {
+    String[] firstAndLastName = fullName.toLowerCase().split(" ");
+    username = firstAndLastName[0].charAt(0) + firstAndLastName[1];
+  }
+
+  private boolean checkName(String name) {
+    return name.contains(" ");
+  }
+
+  private void setEmail(String fullName) {
+    String[] firstAndLastName = fullName.toLowerCase().split(" ");
+    email = firstAndLastName[0] + "." + firstAndLastName[1] + "@oracleacademy.Test";
+  }
+
+  private boolean isValidPassword(String password) {
+    boolean containsLower = lowercasePattern.matcher(password).find();
+    boolean containsUpper = uppercasePattern.matcher(password).find();
+    boolean containsSpecial = specialCharPattern.matcher(password).find();
+
+    if (containsLower && containsUpper && containsSpecial) {
+      this.password = password;
     }
+
+    this.password = "pw";
     return false;
+  }
+
+  @Override
+  public String toString() {
+    final String pattern = "Employee Details\n"
+        + "Name : %s\n"
+        + "Username : %s\n"
+        + "Email : %s\n"
+        + "Initial Password : %s";
+
+    return String.format(pattern, name.toString(), username, email, password);
   }
 }
