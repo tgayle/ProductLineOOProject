@@ -17,6 +17,7 @@ import java.util.Scanner;
 import model.ItemType;
 import model.Product;
 import model.Widget;
+import model.employee.Employee;
 import model.production.Production;
 import model.production.ProductionWithProduct;
 
@@ -28,26 +29,23 @@ public class DatabaseProvider {
    */
   private static final String DB_PATH = "jdbc:h2:" + "./src/main/resources/db/ProductionLineDB";
   private static DatabaseProvider dbInstance;
+  private static Employee currentEmployee;
   private Connection connection;
 
-  private DatabaseProvider() throws SQLException, ClassNotFoundException {
+  private DatabaseProvider() throws SQLException, ClassNotFoundException, FileNotFoundException {
     File databaseAuthFile = new File("./src/main/resources/db/DATABASE_LOGIN");
     if (!databaseAuthFile.exists()) {
       throw new RuntimeException("No database password was found (DATABASE_LOGIN)");
     }
 
-    try {
-      Scanner loginReader = new Scanner(databaseAuthFile);
-      String username = loginReader.nextLine();
-      String encryptedPassword = loginReader.nextLine();
-      String decryptedPassword = new StringBuilder(encryptedPassword).reverse().toString();
+    Scanner loginReader = new Scanner(databaseAuthFile);
+    String username = loginReader.nextLine();
+    String encryptedPassword = loginReader.nextLine();
+    String decryptedPassword = new StringBuilder(encryptedPassword).reverse().toString();
 
-      Class.forName("org.h2.Driver");
-      connection = DriverManager.getConnection(DB_PATH, username, decryptedPassword);
-      System.out.println("Password successfully retrieved and 'decrypted.'");
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
+    Class.forName("org.h2.Driver");
+    connection = DriverManager.getConnection(DB_PATH, username, decryptedPassword);
+    System.out.println("Password successfully retrieved and 'decrypted.'");
   }
 
   /**
@@ -177,13 +175,14 @@ public class DatabaseProvider {
       connection.setAutoCommit(false);
       String insertionQuery =
           "INSERT INTO PRODUCTIONRECORD "
-              + "(PRODUCT_ID, QUANTITY, DATE_PRODUCED) VALUES (?, ?, ?)";
+              + "(PRODUCT_ID, QUANTITY, DATE_PRODUCED, EMPLOYEE_ID) VALUES (?, ?, ?, ?)";
 
       try (PreparedStatement stmnt = connection.prepareStatement(insertionQuery)) {
         for (Production production : productions) {
           stmnt.setInt(1, production.getProductId());
           stmnt.setInt(2, production.getQuantity());
           stmnt.setTimestamp(3, Timestamp.valueOf(production.getManufacturedOn()));
+          stmnt.setInt(4, 0);
           stmnt.execute();
         }
       }
@@ -282,5 +281,80 @@ public class DatabaseProvider {
 
   public void recordProduction(Production... productions) {
     recordProductions(Arrays.asList(productions));
+  }
+
+  public Employee registerEmployee(Employee employee) {
+    if (!doesUserExist(employee.getUsername())) {
+      insertEmployee(employee);
+    }
+
+    // This username didn't previously exist, so we should store this user.
+    loginEmployee(employee.getUsername(), employee.getPassword());
+
+    return employee;
+  }
+
+  public boolean doesUserExist(String username) {
+    String userExistsQuery = "SELECT COUNT(*) FROM Employee WHERE username=?";
+
+    try (PreparedStatement stmnt = connection.prepareStatement(userExistsQuery)) {
+      stmnt.setString(1, username);
+      ResultSet result = stmnt.executeQuery();
+      result.next();
+      int count = result.getInt(1);
+      return count > 0;
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
+
+  public Employee loginEmployee(String username, String password) {
+    String fetchUserQuery = "SELECT * FROM Employee WHERE username=? AND password=? LIMIT 1";
+
+    try (PreparedStatement statement = connection.prepareStatement(fetchUserQuery)) {
+      statement.setString(1, username);
+      statement.setString(2, password);
+
+      ResultSet result = statement.executeQuery();
+
+      // This username and password is valid.
+      if (result.next()) {
+        int employeeId = result.getInt(1);
+        String employeeFirstName = result.getString(2);
+        String employeeLastName = result.getString(3);
+        String employeeEmail = result.getString(4);
+        String employeeUsername = result.getString(5);
+        String employeePassword = result.getString(6);
+        currentEmployee = new Employee(
+            employeeId, employeeFirstName, employeeLastName,
+            employeeUsername, employeePassword, employeeEmail);
+
+        return currentEmployee;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return null;
+  }
+
+  public boolean insertEmployee(Employee employee) {
+    String insertQuery = "INSERT INTO Employee "
+        + "(FIRSTNAME, LASTNAME, EMAIL, USERNAME, PASSWORD) VALUES (?, ?, ?, ?, ?) ";
+
+    try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
+      statement.setString(1, employee.getFirstName());
+      statement.setString(2, employee.getLastName());
+      statement.setString(3, employee.getEmail());
+      statement.setString(4, employee.getUsername());
+      statement.setString(5, employee.getPassword());
+      statement.executeUpdate();
+      return true;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
   }
 }

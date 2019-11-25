@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import model.production.ProductionWithProduct;
 
 public class ProductionLogController extends BaseController {
@@ -18,7 +17,6 @@ public class ProductionLogController extends BaseController {
   public TableColumn<ProductionWithProduct, Integer> columnQuantityProduced;
   public TableColumn<ProductionWithProduct, String> columnDateProduced;
   public TableView<ProductionWithProduct> productionLogTable;
-  public AnchorPane productionLogRoot;
 
   public ProductionLogController() {
     super(controllerId);

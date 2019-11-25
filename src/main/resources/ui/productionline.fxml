@@ -4,8 +4,8 @@
 <?import javafx.scene.control.TabPane?>
 <TabPane
   xmlns:fx="http://javafx.com/fxml/1"
-  prefHeight="435.0"
-  prefWidth="390.0"
+  prefHeight="600.0"
+  prefWidth="700.0"
   xmlns="http://javafx.com/javafx/8.0.161"
   fx:controller="frontend.RootController"
   fx:id="mainTabPane">

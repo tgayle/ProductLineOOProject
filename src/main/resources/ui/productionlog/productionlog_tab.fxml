@@ -2,19 +2,21 @@
 
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane
+<?import javafx.scene.layout.HBox?>
+<HBox
   xmlns:fx="http://javafx.com/fxml"
   xmlns="http://javafx.com/javafx"
   fx:controller="frontend.screens.productionlog.ProductionLogController"
   fx:id="productionLogRoot">
-  <children>
-    <TableView layoutY="3.0" prefHeight="391.0" prefWidth="390.0" fx:id="productionLogTable">
-      <columns>
-        <TableColumn prefWidth="75.0" text="Product" fx:id="columnProductName"/>
-        <TableColumn prefWidth="75.0" text="Quantity" fx:id="columnQuantityProduced"/>
-        <TableColumn prefWidth="75.0" text="Date Produced" fx:id="columnDateProduced"/>
-      </columns>
-    </TableView>
-  </children>
-</AnchorPane>
+  <TableView HBox.hgrow="ALWAYS" fx:id="productionLogTable">
+    <columnResizePolicy>
+      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+    </columnResizePolicy>
+    <columns>
+      <TableColumn text="Product" fx:id="columnProductName"/>
+      <TableColumn text="Quantity" fx:id="columnQuantityProduced"/>
+      <TableColumn text="Date Produced" fx:id="columnDateProduced"/>
+      <TableColumn text="Produced By" fx:id="columnProducedBy"/>
+    </columns>
+  </TableView>
+</HBox>

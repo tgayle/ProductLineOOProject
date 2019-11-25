@@ -1,2 +1,30 @@
 body {
 }
+
+.header {
+  -fx-font-size: 2em;
+}
+
+.jfx-snackbar-content {
+  -fx-background-color: black;
+  -fx-background-radius: 8px;
+}
+
+.jfx-snackbar-toast {
+  -fx-text-fill: WHITE;
+  -fx-font-size: 20;
+}
+
+.info--account Label {
+  -fx-font-size: 1.5em;
+  -fx-font-weight: bold;
+}
+
+.info--account Text {
+  -fx-underline: true;
+  -fx-font-size: 1.2em;
+}
+
+.subheader {
+  -fx-font-size: 1.6em;
+}

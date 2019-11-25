@@ -1,5 +1,6 @@
 package frontend;
 
+import frontend.screens.employee.EmployeeController;
 import frontend.screens.produce.ProduceController;
 import frontend.screens.productionlog.ProductionLogController;
 import frontend.screens.productline.ProductLineController;
@@ -14,6 +15,7 @@ public class RootController extends BaseController {
   public Tab productionLineTab;
   public Tab produceTab;
   public Tab productionLogTab;
+  public Tab employeeTab;
 
   public RootController() {
     super(controllerId);
@@ -36,6 +38,9 @@ public class RootController extends BaseController {
             case "productionLogTab":
               controller = ProductionLogController.get();
               break;
+            case "employeeTab":
+              controller = EmployeeController.get();
+              break;
             default:
               controller = null;
               System.out
@@ -56,5 +61,6 @@ public class RootController extends BaseController {
     ProductLineController.get().update();
     ProduceController.get().update();
     ProductionLogController.get().update();
+    EmployeeController.get().update();
   }
 }

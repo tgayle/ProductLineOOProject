@@ -10,7 +10,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import misc.SuppressFBWarnings;
 import model.ItemType;
 import model.Product;
@@ -27,7 +27,7 @@ public class ProductLineController extends BaseController {
   public TableColumn<Product, String> productListColumnType;
   public TableColumn<Product, String> productListManufacturer;
   public TableView<Product> productListTable;
-  public AnchorPane productLineTabRoot;
+  public VBox productLineTabRoot;
 
   public ProductLineController() {
     super(controllerId);

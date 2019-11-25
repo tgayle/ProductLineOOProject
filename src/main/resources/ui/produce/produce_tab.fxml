@@ -3,22 +3,38 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<HBox
   xmlns:fx="http://javafx.com/fxml"
   xmlns="http://javafx.com/javafx"
   fx:controller="frontend.screens.produce.ProduceController"
   fx:id="produceTabRoot">
 
-  <children>
-    <JFXButton layoutX="238.0" layoutY="287.0" onAction="#produceRecordBtnClick"
-      text="Record Production"/>
-    <JFXComboBox layoutX="133.0" layoutY="238.0" fx:id="produceQuantityCBox"/>
-    <JFXListView layoutY="49.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity"
-      prefHeight="178.0" prefWidth="390.0"
-      fx:id="produceProductList"/>
-    <Label layoutX="6.0" layoutY="20.0" text="Choose Product"/>
-    <Label layoutX="14.0" layoutY="243.0" text="Choose Quantity"/>
-  </children>
-</AnchorPane>
+  <VBox HBox.hgrow="ALWAYS">
+    <Text text="Choose Product"/>
+    <HBox>
+      <JFXListView fx:id="produceProductList" HBox.hgrow="ALWAYS"/>
+      <VBox HBox.hgrow="ALWAYS" alignment="TOP_CENTER">
+        <Label text="Choose Quantity"/>
+        <JFXComboBox fx:id="produceQuantityCBox"/>
+        <JFXButton onAction="#produceRecordBtnClick" text="Record Production">
+          <VBox.margin>
+            <Insets top="12"/>
+          </VBox.margin>
+        </JFXButton>
+        <padding>
+          <Insets topRightBottomLeft="16"/>
+        </padding>
+      </VBox>
+    </HBox>
+
+    <padding>
+      <Insets topRightBottomLeft="16"/>
+    </padding>
+  </VBox>
+
+</HBox>

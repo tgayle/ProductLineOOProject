@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import model.Product;
 import model.production.ProductionWithProduct;
 
@@ -21,7 +21,7 @@ public class ProduceController extends BaseController {
   private static ProduceController controller;
   public JFXComboBox<String> produceQuantityCBox;
   public JFXListView<Product> produceProductList;
-  public AnchorPane produceTabRoot;
+  public HBox produceTabRoot;
 
   public ProduceController() {
     super(controllerId);
