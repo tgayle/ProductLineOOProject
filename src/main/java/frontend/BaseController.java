@@ -7,12 +7,11 @@ import backend.DatabaseProvider;
  */
 public abstract class BaseController implements Actionable {
 
-  protected String id;
   protected DatabaseProvider database = DatabaseProvider.get();
-
-  public BaseController(String id) {
-    this.id = id;
-  }
+  protected static final String STATIC_REFERENCE_JUSTIFICATION =
+      "Controllers are inflated via FXML and only one instance will be available. "
+          + "Storing static instances of the controller for each tab makes it easier"
+          + " for sending updates to each tab.";
 
   /**
    * The standard initialize function that is directly called from JavaFX when a controller is set.

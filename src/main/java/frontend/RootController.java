@@ -4,6 +4,7 @@ import frontend.screens.employee.EmployeeController;
 import frontend.screens.produce.ProduceController;
 import frontend.screens.productionlog.ProductionLogController;
 import frontend.screens.productline.ProductLineController;
+import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
@@ -12,15 +13,16 @@ public class RootController extends BaseController {
 
   public static final String controllerId = "rootController";
 
-  public TabPane mainTabPane;
-  public Tab productionLineTab;
-  public Tab produceTab;
-  public Tab productionLogTab;
-  public Tab employeeTab;
-
-  public RootController() {
-    super(controllerId);
-  }
+  @FXML
+  private TabPane mainTabPane;
+  @FXML
+  private Tab productionLineTab;
+  @FXML
+  private Tab produceTab;
+  @FXML
+  private Tab productionLogTab;
+  @FXML
+  private Tab employeeTab;
 
   @Override
   public void prepare() {

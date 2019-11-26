@@ -8,7 +8,7 @@ import java.time.format.FormatStyle;
  * A record of production containing information on the product produced, the amount produced, and
  * when this production was completed.
  */
-public class Production implements Comparable {
+public class Production {
 
   protected int productionId; // id
   protected int productId;
@@ -115,30 +115,5 @@ public class Production implements Comparable {
     String formatter = "Production Num: %s%n Product ID: %s %nSerial Num: %s %nDate: %s";
     return String.format(
         formatter, productionId, productId, serialNumber, getFormattedManufacturedDate());
-  }
-
-  @Override
-  public int compareTo(Object o) {
-    if (o instanceof Production) {
-      return this.serialNumber.compareTo(((Production) o).serialNumber);
-    }
-
-    return 0;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    } else if (obj instanceof Production) {
-      Production objAsProd = (Production) obj;
-
-      return this.serialNumber.equals(objAsProd.serialNumber)
-          && this.manufacturedOn.equals(objAsProd.manufacturedOn)
-          && this.productId == objAsProd.productId
-          && this.quantity == objAsProd.quantity
-          && this.productionId == objAsProd.productionId;
-    }
-    return false;
   }
 }

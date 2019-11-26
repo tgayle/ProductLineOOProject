@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import misc.SuppressFBWarnings;
 import model.production.ProductionWithProduct;
 
 public class ProductionLogController extends BaseController {
@@ -19,8 +20,10 @@ public class ProductionLogController extends BaseController {
   public TableColumn<ProductionWithProduct, String> columnProducedBy;
   public TableView<ProductionWithProduct> productionLogTable;
 
+  @SuppressFBWarnings(
+      value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD",
+      justification = STATIC_REFERENCE_JUSTIFICATION)
   public ProductionLogController() {
-    super(controllerId);
     controller = this;
   }
 

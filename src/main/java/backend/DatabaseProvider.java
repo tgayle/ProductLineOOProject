@@ -29,7 +29,7 @@ public class DatabaseProvider {
    */
   private static final String DB_PATH = "jdbc:h2:" + "./src/main/resources/db/ProductionLineDB";
   private static DatabaseProvider dbInstance;
-  private static Employee currentEmployee;
+  private Employee currentEmployee;
   private Connection connection;
 
   private DatabaseProvider() throws SQLException, ClassNotFoundException, FileNotFoundException {
@@ -38,7 +38,7 @@ public class DatabaseProvider {
       throw new RuntimeException("No database password was found (DATABASE_LOGIN)");
     }
 
-    Scanner loginReader = new Scanner(databaseAuthFile);
+    Scanner loginReader = new Scanner(databaseAuthFile, "utf-8");
     String username = loginReader.nextLine();
     String encryptedPassword = loginReader.nextLine();
     String decryptedPassword = new StringBuilder(encryptedPassword).reverse().toString();
@@ -149,7 +149,9 @@ public class DatabaseProvider {
   public List<Product> getAllProducts() throws SQLException {
     String allQuery = "SELECT * FROM PRODUCT";
     List<Product> products = new ArrayList<>();
-    try (ResultSet rows = connection.createStatement().executeQuery(allQuery)) {
+    try (Statement stmt = connection.createStatement()) {
+      ResultSet rows = stmt.executeQuery(allQuery);
+
       while (rows.next()) {
         int id = rows.getInt(1);
         String name = rows.getString(2);
@@ -210,8 +212,8 @@ public class DatabaseProvider {
   }
 
   private Employee getDefaultEmployee() {
-    try (ResultSet resultSet = connection.createStatement()
-        .executeQuery("SELECT * FROM Employee WHERE username='default'")) {
+    try (Statement stmt = connection.createStatement()) {
+      ResultSet resultSet = stmt.executeQuery("SELECT * FROM Employee WHERE username='default'");
 
       resultSet.next();
       return getEmployeeFromResultRow(resultSet);
@@ -231,7 +233,8 @@ public class DatabaseProvider {
   public List<Production> getAllProductions() throws SQLException {
     String allQuery = "SELECT * FROM PRODUCTIONRECORD";
     List<Production> productions = new ArrayList<>();
-    try (ResultSet rows = connection.createStatement().executeQuery(allQuery)) {
+    try (Statement stmt = connection.createStatement()) {
+      ResultSet rows = stmt.executeQuery(allQuery);
 
       while (rows.next()) {
         int productionId = rows.getInt(1);
@@ -259,7 +262,10 @@ public class DatabaseProvider {
             + "JOIN PRODUCT P on (PR.PRODUCT_ID=P.ID)";
 
     List<ProductionWithProduct> productions = new ArrayList<>();
-    ResultSet rows = connection.createStatement().executeQuery(getProductsWithProductQuery);
+
+    Statement stmt = connection.createStatement();
+    ResultSet rows = stmt.executeQuery(getProductsWithProductQuery);
+
     while (rows.next()) {
       int productionId = rows.getInt(1);
       int productId = rows.getInt(2);
@@ -284,6 +290,7 @@ public class DatabaseProvider {
       );
     }
     rows.close();
+    stmt.close();
     return productions;
   }
 
@@ -299,7 +306,11 @@ public class DatabaseProvider {
     query.setString(1, "%" + type.getCode() + "%");
     ResultSet resultSet = query.executeQuery();
     resultSet.next();
-    return resultSet.getInt(1);
+    int count = resultSet.getInt(1);
+
+    resultSet.close();
+    query.close();
+    return count;
   }
 
   public void recordProduction(Production... productions) {

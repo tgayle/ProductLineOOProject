@@ -33,8 +33,10 @@ public class ProductLineController extends BaseController {
   public VBox productLineTabRoot;
   public JFXSnackbar snackbar;
 
+  @SuppressFBWarnings(
+      value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD",
+      justification = STATIC_REFERENCE_JUSTIFICATION)
   public ProductLineController() {
-    super(controllerId);
     controller = this;
   }
 

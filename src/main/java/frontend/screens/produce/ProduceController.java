@@ -10,8 +10,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.HBox;
+import misc.SuppressFBWarnings;
 import model.Product;
 import model.production.ProductionWithProduct;
 
@@ -19,12 +21,17 @@ public class ProduceController extends BaseController {
 
   public static final String controllerId = "Produce";
   private static ProduceController controller;
-  public JFXComboBox<String> produceQuantityCBox;
-  public JFXListView<Product> produceProductList;
-  public HBox produceTabRoot;
+  @FXML
+  private JFXComboBox<String> produceQuantityCBox;
+  @FXML
+  private JFXListView<Product> produceProductList;
+  @FXML
+  private HBox produceTabRoot;
 
+  @SuppressFBWarnings(
+      value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD",
+      justification = STATIC_REFERENCE_JUSTIFICATION)
   public ProduceController() {
-    super(controllerId);
     controller = this;
   }
 

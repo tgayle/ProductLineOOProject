@@ -1,6 +1,5 @@
 package frontend.screens.employee;
 
-import backend.DatabaseProvider;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSnackbar;
@@ -9,6 +8,7 @@ import com.jfoenix.controls.JFXSnackbarLayout;
 import com.jfoenix.controls.JFXTextField;
 import frontend.BaseController;
 import javafx.animation.FadeTransition;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -16,37 +16,58 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import misc.SuppressFBWarnings;
 import model.employee.Employee;
 
 public class EmployeeController extends BaseController {
 
   private static EmployeeController controller;
-  DatabaseProvider database = DatabaseProvider.get();
-  public VBox loginContainer;
-  public JFXTextField loginUsername;
-  public JFXPasswordField loginPassword;
-  public JFXButton loginSignInBtn;
-  public JFXButton loginSignUpBtn;
+  @FXML
+  private VBox loginContainer;
+  @FXML
+  private JFXTextField loginUsername;
+  @FXML
+  private JFXPasswordField loginPassword;
+  @FXML
+  private JFXButton loginSignInBtn;
+  @FXML
+  private JFXButton loginSignUpBtn;
 
-  public VBox welcomeUserContainer;
-  public Text loggedInAsText;
-  public Text welcomeUsername;
-  public Text welcomeUserPassword;
-  public Text welcomeEmail;
-  public JFXButton welcomeLogoutButton;
+  @FXML
+  private VBox welcomeUserContainer;
+  @FXML
+  private Text loggedInAsText;
+  @FXML
+  private Text welcomeUsername;
+  @FXML
+  private Text welcomeUserPassword;
+  @FXML
+  private Text welcomeEmail;
+  @FXML
+  private JFXButton welcomeLogoutButton;
 
-  public VBox signupContainer;
-  public JFXPasswordField signupPassword;
-  public JFXButton signupBackBtn;
-  public JFXButton signupSignUpBtn;
-  public HBox employeeRoot;
-  public StackPane employeeStackRoot;
-  public JFXTextField signupFullName;
-  JFXSnackbar snackbar;
+  @FXML
+  private VBox signupContainer;
+  @FXML
+  private JFXPasswordField signupPassword;
+  @FXML
+  private JFXButton signupBackBtn;
+  @FXML
+  private JFXButton signupSignUpBtn;
+  @FXML
+  private HBox employeeRoot;
+  @FXML
+  private StackPane employeeStackRoot;
+  @FXML
+  private JFXTextField signupFullName;
+
+  private JFXSnackbar snackbar;
 
 
+  @SuppressFBWarnings(
+      value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD",
+      justification = STATIC_REFERENCE_JUSTIFICATION)
   public EmployeeController() {
-    super("EmployeeController");
     controller = this;
   }
 
