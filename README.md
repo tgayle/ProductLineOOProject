@@ -26,12 +26,11 @@ IntelliJ:
 * Go to Main.java in src/main/java/frontend and press the play button next to `public class Main...`
 
 ## Built With
-* Java
-* JavaFX
+* Java 8
+* JavaFX 8
 * H2 SQL Database
-
-## Contributing
-
+* JFoenix Material Design Library
+* IntelliJ
 
 ## Author
 * Travis Gayle
@@ -46,14 +45,19 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ## Acknowledgments
-* [Oracle Java Documentation](https://docs.oracle.com/javase/7/docs/api/index.html)
-* [H2 Database](https://github.com/h2database/h2database)
-* [JFoenix - JavaFX Material Design](https://github.com/jfoenixadmin/JFoenix)
 * [StackOverflow](https://stackoverflow.com)
+* **Scott Vanselow** - Object Oriented Programming Instructor
+* **Damian Morgan** - Object Oriented Programming Teaching Assistant
 
 ## History
-9/28/19 - Sprint 1 Completed
-
+* 9/28/19 - Program Alpha Completed
+* 11/9/19 - Program Beta Completed
+* 11/25/19 - Final Project Completed
 
 ## Key Programming Concepts Utilized
 * Object Oriented Programming
+* Polymorphism
+* Dynamic Dispatch
+* Inheritance
+* Functional Interfaces
+* Encapsulation
