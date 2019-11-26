@@ -97,6 +97,11 @@ public class EmployeeController extends BaseController {
     });
   }
 
+  /**
+   * Attempts to register a new user with the information provided in text fields. If the
+   * information provided to create a new user results in the current user being the default user,
+   * then we display a failure message and continue onwards.
+   */
   public void signupUser() {
     String password = signupPassword.getText();
     String fullName = signupFullName.getText();
@@ -117,6 +122,10 @@ public class EmployeeController extends BaseController {
     populateWelcomeView(registeredEmployee);
   }
 
+  /**
+   * Attempts to sign in as a user given the entered username and password. If the username and
+   * password aren't valid, we proceed as the default user.
+   */
   public void signInUser() {
     String username = loginUsername.getText();
     String password = loginPassword.getText();
@@ -133,6 +142,12 @@ public class EmployeeController extends BaseController {
     }
   }
 
+  /**
+   * Populates the welcome window with information about the given employee and clears the input
+   * fields from previous windows.
+   *
+   * @param employee The employee that the view should be populated with.
+   */
   void populateWelcomeView(Employee employee) {
     signupPassword.clear();
     signupFullName.clear();
@@ -146,7 +161,16 @@ public class EmployeeController extends BaseController {
     welcomeEmail.setText(employee.getEmail());
   }
 
-  private static void crossfadeViews(Node in, Node out, Pane parent, double duration) {
+  /**
+   * Animates between two windows, fading away the first in fading in the second.
+   *
+   * @param in The window that should be displayed
+   * @param out The window to be removed
+   * @param parent The parent pane for both of these nodes
+   * @param duration The length of time, in milliseconds that should be spent on animating the in
+   * and out nodes individually.
+   */
+  public static void crossfadeViews(Node in, Node out, Pane parent, double duration) {
     FadeTransition t = new FadeTransition(Duration.millis(duration), out);
     t.setFromValue(1);
     t.setToValue(0);
@@ -164,6 +188,6 @@ public class EmployeeController extends BaseController {
 
   @Override
   public void update() {
-
+    populateWelcomeView(database.getCurrentEmployee());
   }
 }

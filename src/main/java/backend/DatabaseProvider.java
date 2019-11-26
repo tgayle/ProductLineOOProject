@@ -317,6 +317,14 @@ public class DatabaseProvider {
     recordProductions(Arrays.asList(productions));
   }
 
+  /**
+   * Attempts to add a user to the database and log in as that user. If the user's username does not
+   * already exists in the database, then a new employee is added to the database, then we are
+   * logged in as the user.
+   *
+   * @param employee The employee to try registering and logging in as.
+   * @return The employee we were logged in as.
+   */
   public Employee registerEmployee(Employee employee) {
     if (!doesUserExist(employee.getUsername())) {
       insertEmployee(employee);
@@ -328,6 +336,11 @@ public class DatabaseProvider {
     return employee;
   }
 
+  /**
+   * Returns an employee given their id.
+   * @param id The id of the employee.
+   * @return The employee with the given id, or null if this user does not exist.
+   */
   public Employee getEmployeeById(int id) {
     try (PreparedStatement stmnt = connection
         .prepareStatement("SELECT * FROM Employee WHERE id=?")) {
@@ -344,6 +357,11 @@ public class DatabaseProvider {
     return null;
   }
 
+  /**
+   * Returns true if the given username exists in the database.
+   * @param username The username to search the database for.
+   * @return True if the username is present in the database, else fa;se/
+   */
   public boolean doesUserExist(String username) {
     String userExistsQuery = "SELECT COUNT(*) FROM Employee WHERE username=?";
 
@@ -359,6 +377,15 @@ public class DatabaseProvider {
     return false;
   }
 
+  /**
+   * Attempts to login as a user with a given username and password. If the given username and
+   * password match those for an employee in the database, then the login will be successful and
+   * the located employee will be stored as the current employee.
+   * @param username The username to attempt logging in with.
+   * @param password The password to attempt logging in with.
+   * @return The employee that has become the current user if the username and password are valid,
+   *         else false.
+   */
   public Employee loginEmployee(String username, String password) {
     String fetchUserQuery = "SELECT * FROM Employee WHERE username=? AND password=? LIMIT 1";
 
@@ -380,6 +407,12 @@ public class DatabaseProvider {
     return null;
   }
 
+  /**
+   * Creates an employee from a row in a ResultSet.
+   * @param result A result set containing all columns of the employee table.
+   * @return The employee from the columns of the current row in the result set.
+   * @throws SQLException if there is an issue reading from the database.
+   */
   private Employee getEmployeeFromResultRow(ResultSet result) throws SQLException {
     int employeeId = result.getInt(1);
     String employeeFirstName = result.getString(2);
@@ -394,6 +427,11 @@ public class DatabaseProvider {
     return employee;
   }
 
+  /**
+   * Adds the given employee to the database.
+   * @param employee The employee to insert.
+   * @return True if the insertion was successful, else false.
+   */
   public boolean insertEmployee(Employee employee) {
     String insertQuery = "INSERT INTO Employee "
         + "(FIRSTNAME, LASTNAME, EMAIL, USERNAME, PASSWORD) VALUES (?, ?, ?, ?, ?) ";
@@ -411,5 +449,9 @@ public class DatabaseProvider {
       e.printStackTrace();
       return false;
     }
+  }
+
+  public Employee getCurrentEmployee() {
+    return currentEmployee;
   }
 }
