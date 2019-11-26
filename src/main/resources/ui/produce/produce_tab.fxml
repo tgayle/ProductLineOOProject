@@ -15,11 +15,11 @@
   fx:id="produceTabRoot">
 
   <VBox HBox.hgrow="ALWAYS">
-    <Text text="Choose Product"/>
+    <Text text="Choose Product" styleClass="header"/>
     <HBox>
       <JFXListView fx:id="produceProductList" HBox.hgrow="ALWAYS"/>
-      <VBox HBox.hgrow="ALWAYS" alignment="TOP_CENTER">
-        <Label text="Choose Quantity"/>
+      <VBox HBox.hgrow="ALWAYS" alignment="CENTER">
+        <Label text="Choose Quantity" styleClass="subheader"/>
         <JFXComboBox fx:id="produceQuantityCBox"/>
         <JFXButton onAction="#produceRecordBtnClick" text="Record Production">
           <VBox.margin>

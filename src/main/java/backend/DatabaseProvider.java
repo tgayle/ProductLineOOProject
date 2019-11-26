@@ -172,6 +172,7 @@ public class DatabaseProvider {
    */
   public void recordProductions(List<Production> productions) {
     try {
+      verifyEmployee();
       connection.setAutoCommit(false);
       String insertionQuery =
           "INSERT INTO PRODUCTIONRECORD "
@@ -182,7 +183,7 @@ public class DatabaseProvider {
           stmnt.setInt(1, production.getProductId());
           stmnt.setInt(2, production.getQuantity());
           stmnt.setTimestamp(3, Timestamp.valueOf(production.getManufacturedOn()));
-          stmnt.setInt(4, 0);
+          stmnt.setInt(4, currentEmployee.getId());
           stmnt.execute();
         }
       }
@@ -200,6 +201,25 @@ public class DatabaseProvider {
         e.printStackTrace();
       }
     }
+  }
+
+  private void verifyEmployee() {
+    if (currentEmployee == null) {
+      currentEmployee = getDefaultEmployee();
+    }
+  }
+
+  private Employee getDefaultEmployee() {
+    try (ResultSet resultSet = connection.createStatement()
+        .executeQuery("SELECT * FROM Employee WHERE username='default'")) {
+
+      resultSet.next();
+      return getEmployeeFromResultRow(resultSet);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return null;
   }
 
   /**
@@ -234,7 +254,7 @@ public class DatabaseProvider {
   public List<ProductionWithProduct> getAllProductionsWithItems() throws SQLException {
     final String getProductsWithProductQuery =
         "SELECT PR.PRODUCTION_ID, PR.PRODUCT_ID, PR.QUANTITY, PR.DATE_PRODUCED,"
-            + " P.NAME, P.MANUFACTURER, P.TYPE, P.SERIALNUM\n"
+            + " P.NAME, P.MANUFACTURER, P.TYPE, P.SERIALNUM, PR.EMPLOYEE_ID\n"
             + "FROM PRODUCTIONRECORD PR\n"
             + "JOIN PRODUCT P on (PR.PRODUCT_ID=P.ID)";
 
@@ -249,6 +269,8 @@ public class DatabaseProvider {
       String manufacturer = rows.getString(6);
       String productType = rows.getString(7);
       String serialNumber = rows.getString(8);
+      int employeeId = rows.getInt(9);
+
 
       Product productProduced = new Widget(productId, productName, ItemType.fromCode(productType),
           manufacturer);
@@ -258,7 +280,8 @@ public class DatabaseProvider {
       productions.add(
           new ProductionWithProduct(productionId, quantity, serialNumber,
               dateProduced.toLocalDateTime(),
-              productProduced));
+              productProduced, getEmployeeById(employeeId))
+      );
     }
     rows.close();
     return productions;
@@ -294,6 +317,22 @@ public class DatabaseProvider {
     return employee;
   }
 
+  public Employee getEmployeeById(int id) {
+    try (PreparedStatement stmnt = connection
+        .prepareStatement("SELECT * FROM Employee WHERE id=?")) {
+      stmnt.setInt(1, id);
+
+      ResultSet result = stmnt.executeQuery();
+
+      if (result.next()) {
+        return getEmployeeFromResultRow(result);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
   public boolean doesUserExist(String username) {
     String userExistsQuery = "SELECT COUNT(*) FROM Employee WHERE username=?";
 
@@ -320,16 +359,7 @@ public class DatabaseProvider {
 
       // This username and password is valid.
       if (result.next()) {
-        int employeeId = result.getInt(1);
-        String employeeFirstName = result.getString(2);
-        String employeeLastName = result.getString(3);
-        String employeeEmail = result.getString(4);
-        String employeeUsername = result.getString(5);
-        String employeePassword = result.getString(6);
-        currentEmployee = new Employee(
-            employeeId, employeeFirstName, employeeLastName,
-            employeeUsername, employeePassword, employeeEmail);
-
+        currentEmployee = getEmployeeFromResultRow(result);
         return currentEmployee;
       }
     } catch (SQLException e) {
@@ -337,6 +367,20 @@ public class DatabaseProvider {
     }
 
     return null;
+  }
+
+  private Employee getEmployeeFromResultRow(ResultSet result) throws SQLException {
+    int employeeId = result.getInt(1);
+    String employeeFirstName = result.getString(2);
+    String employeeLastName = result.getString(3);
+    String employeeEmail = result.getString(4);
+    String employeeUsername = result.getString(5);
+    String employeePassword = result.getString(6);
+    Employee employee = new Employee(
+        employeeId, employeeFirstName, employeeLastName,
+        employeeUsername, employeePassword, employeeEmail);
+
+    return employee;
   }
 
   public boolean insertEmployee(Employee employee) {

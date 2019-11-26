@@ -28,3 +28,10 @@ body {
 .subheader {
   -fx-font-size: 1.6em;
 }
+
+JFXButton {
+  -fx-border-color: white;
+  -fx-background-color: teal;
+  -fx-background-radius: 7px;
+  -fx-text-fill: white;
+}

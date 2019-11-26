@@ -6,6 +6,7 @@ import frontend.screens.productionlog.ProductionLogController;
 import frontend.screens.productline.ProductLineController;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 
 public class RootController extends BaseController {
 
@@ -23,6 +24,7 @@ public class RootController extends BaseController {
 
   @Override
   public void prepare() {
+    mainTabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
     System.out.println("Controller started!");
     mainTabPane.getSelectionModel().selectedItemProperty().addListener(
         (observableValue, oldTab, newTab) -> {

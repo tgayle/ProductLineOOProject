@@ -2,11 +2,13 @@ package model.production;
 
 import java.time.LocalDateTime;
 import model.Product;
+import model.employee.Employee;
 
 public class ProductionWithProduct extends Production {
 
   private Product product;
   private String productSimpleName;
+  private Employee producingEmployee;
 
   /**
    * Creates a record of production and attaches a product with it.
@@ -46,10 +48,12 @@ public class ProductionWithProduct extends Production {
    * @param product The product that was produced
    */
   public ProductionWithProduct(int productionId, int quantity,
-      String serialNumber, LocalDateTime manufacturedOn, Product product) {
+      String serialNumber, LocalDateTime manufacturedOn, Product product,
+      Employee producingEmployee) {
     super(productionId, product.getId(), quantity, serialNumber, manufacturedOn);
 
     setProduct(product);
+    setProducingEmployee(producingEmployee);
   }
 
   public Product getProduct() {
@@ -61,7 +65,19 @@ public class ProductionWithProduct extends Production {
     this.productSimpleName = product.getSimpleName();
   }
 
+  public Employee getProducingEmployee() {
+    return producingEmployee;
+  }
+
+  public void setProducingEmployee(Employee producingEmployee) {
+    this.producingEmployee = producingEmployee;
+  }
+
   public String getProductSimpleName() {
     return productSimpleName;
+  }
+
+  public String getProducedByName() {
+    return producingEmployee.getFirstName() + " " + producingEmployee.getLastName();
   }
 }

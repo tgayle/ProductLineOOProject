@@ -33,6 +33,7 @@ public class EmployeeController extends BaseController {
   public Text welcomeUsername;
   public Text welcomeUserPassword;
   public Text welcomeEmail;
+  public JFXButton welcomeLogoutButton;
 
   public VBox signupContainer;
   public JFXPasswordField signupPassword;
@@ -68,6 +69,10 @@ public class EmployeeController extends BaseController {
 
     signupBackBtn.setOnAction(e -> {
       crossfadeViews(loginContainer, signupContainer, employeeStackRoot, 300);
+    });
+
+    welcomeLogoutButton.setOnAction(e -> {
+      crossfadeViews(loginContainer, welcomeUserContainer, employeeStackRoot, 300);
     });
   }
 
@@ -108,6 +113,11 @@ public class EmployeeController extends BaseController {
   }
 
   void populateWelcomeView(Employee employee) {
+    signupPassword.clear();
+    signupFullName.clear();
+    loginUsername.clear();
+    loginPassword.clear();
+
     loggedInAsText.setText(
         "Currently logged in as " + employee.getFirstName() + " " + employee.getLastName());
     welcomeUsername.setText(employee.getUsername());

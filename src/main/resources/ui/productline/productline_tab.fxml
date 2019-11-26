@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <VBox
@@ -35,21 +36,23 @@
     <JFXTextField GridPane.columnIndex="1" GridPane.rowIndex="1"
       fx:id="pdLnManufacturerText"/>
     <JFXTextField GridPane.columnIndex="1" fx:id="pdLnProductNameText"/>
-    <Label GridPane.rowIndex="2" text="Item Type"/>
-    <Label GridPane.rowIndex="1" text="Manufacturer"/>
-    <Label text="Product Name"/>
+    <Label GridPane.rowIndex="2" text="Item Type" styleClass="subheader"/>
+    <Label GridPane.rowIndex="1" text="Manufacturer" styleClass="subheader"/>
+    <Label text="Product Name" styleClass="subheader"/>
   </GridPane>
-  <JFXButton onAction="#addProductBtnClick" text="Add Product"/>
-  <Label text="Existing Products"/>
+  <HBox alignment="CENTER_RIGHT">
+    <JFXButton onAction="#addProductBtnClick" text="Add Product"/>
+  </HBox>
+  <Label text="Existing Products" styleClass="header"/>
   <TableView fx:id="productListTable">
     <columnResizePolicy>
       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
     </columnResizePolicy>
 
     <columns>
-      <TableColumn prefWidth="154.0" text="Name" fx:id="productListColumnName"/>
-      <TableColumn prefWidth="77.0" text="Type" fx:id="productListColumnType"/>
-      <TableColumn prefWidth="150.0" text="Manufacturer" fx:id="productListManufacturer"/>
+      <TableColumn text="Name" fx:id="productListColumnName"/>
+      <TableColumn text="Type" fx:id="productListColumnType"/>
+      <TableColumn text="Manufacturer" fx:id="productListManufacturer"/>
     </columns>
   </TableView>
 </VBox>

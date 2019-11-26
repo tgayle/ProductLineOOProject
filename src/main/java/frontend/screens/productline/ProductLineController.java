@@ -1,5 +1,8 @@
 package frontend.screens.productline;
 
+import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
+import com.jfoenix.controls.JFXSnackbarLayout;
 import com.jfoenix.controls.JFXTextField;
 import frontend.BaseController;
 import java.sql.SQLException;
@@ -28,6 +31,7 @@ public class ProductLineController extends BaseController {
   public TableColumn<Product, String> productListManufacturer;
   public TableView<Product> productListTable;
   public VBox productLineTabRoot;
+  public JFXSnackbar snackbar;
 
   public ProductLineController() {
     super(controllerId);
@@ -48,9 +52,14 @@ public class ProductLineController extends BaseController {
       justification
           = "These fields are instantiated by the FXMLLoader, which FindBugs does not detect.")
   public void addProductBtnClick(ActionEvent evt) {
+    if (!inputIsValid()) {
+      return;
+    }
+
     String manufacturer = pdLnManufacturerText.getText();
     String productName = pdLnProductNameText.getText();
     String cboxItemType = pdLnItemTypeCBox.getValue();
+
     ItemType itemType = ItemType.valueOf(cboxItemType);
 
     Product product = new Widget(productName, manufacturer, itemType);
@@ -62,6 +71,19 @@ public class ProductLineController extends BaseController {
     System.out.println(result == 2 ? "Successful insertion!" : "Insertion failure");
   }
 
+  private boolean inputIsValid() {
+    String manufacturer = pdLnManufacturerText.getText();
+    String productName = pdLnProductNameText.getText();
+
+    if (manufacturer.length() > 0 && productName.length() > 0) {
+      return true;
+    }
+
+    snackbar.enqueue(
+        new SnackbarEvent(new JFXSnackbarLayout("Please supply a manufacturer and product name!")));
+    return false;
+  }
+
   /**
    * Prepares the Product Line tab's ComboBox and TableView.
    */
@@ -71,6 +93,7 @@ public class ProductLineController extends BaseController {
     }
 
     pdLnItemTypeCBox.getSelectionModel().selectFirst();
+    snackbar = new JFXSnackbar(productLineTabRoot);
 
     productListColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
     productListColumnType.setCellValueFactory(new PropertyValueFactory<>("type"));

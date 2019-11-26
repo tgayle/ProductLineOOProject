@@ -1,7 +1,5 @@
 package model.employee;
 
-import java.util.regex.Pattern;
-
 public class Employee {
 
   private int id;
@@ -11,10 +9,6 @@ public class Employee {
   private String username;
   private String password;
   private String email;
-
-  private static final Pattern lowercasePattern = Pattern.compile("[a-z]");
-  private static final Pattern uppercasePattern = Pattern.compile("[A-Z]");
-  private static final Pattern specialCharPattern = Pattern.compile("\\W");
 
   public Employee(String fullName, String password) {
     this.name = new StringBuilder(fullName);
@@ -61,16 +55,12 @@ public class Employee {
   }
 
   private boolean isValidPassword(String password) {
-    boolean containsLower = lowercasePattern.matcher(password).find();
-    boolean containsUpper = uppercasePattern.matcher(password).find();
-    boolean containsSpecial = specialCharPattern.matcher(password).find();
-
-    if (containsLower && containsUpper && containsSpecial) {
+    if (password.matches(".*[A-Z].*[a-z].*[!@#$%^&*()_+-=<>?]")) {
       this.password = password;
-    } else {
-      this.password = "pw";
+      return true;
     }
 
+    this.password = "pw";
     return false;
   }
 

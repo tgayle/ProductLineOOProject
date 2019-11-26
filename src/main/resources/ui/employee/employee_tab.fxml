@@ -70,6 +70,7 @@
           <Label text="Email:"/>
           <Text fx:id="welcomeEmail"/>
         </VBox>
+        <JFXButton text="Logout" fx:id="welcomeLogoutButton"/>
       </VBox>
     </VBox>
   </StackPane>
