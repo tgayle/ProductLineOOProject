@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import model.ItemType;
 import model.Product;
 import model.Widget;
@@ -32,20 +34,41 @@ public class DatabaseProvider {
   private Employee currentEmployee;
   private Connection connection;
 
-  private DatabaseProvider() throws SQLException, ClassNotFoundException, FileNotFoundException {
+  private DatabaseProvider() {
+    Alert alertWindow = new Alert(AlertType.ERROR);
     File databaseAuthFile = new File("./src/main/resources/db/DATABASE_LOGIN");
     if (!databaseAuthFile.exists()) {
-      throw new RuntimeException("No database password was found (DATABASE_LOGIN)");
+      String message = "No database password was found (DATABASE_LOGIN)";
+      alertWindow.setContentText(message);
+      alertWindow.show();
+      throw new RuntimeException(message);
     }
 
-    Scanner loginReader = new Scanner(databaseAuthFile, "utf-8");
-    String username = loginReader.nextLine();
-    String encryptedPassword = loginReader.nextLine();
-    String decryptedPassword = new StringBuilder(encryptedPassword).reverse().toString();
+    try (Scanner loginReader = new Scanner(databaseAuthFile, "utf-8")) {
+      String username = loginReader.nextLine();
+      String encryptedPassword = loginReader.nextLine();
+      String decryptedPassword = new StringBuilder(encryptedPassword).reverse().toString();
 
-    Class.forName("org.h2.Driver");
-    connection = DriverManager.getConnection(DB_PATH, username, decryptedPassword);
-    System.out.println("Password successfully retrieved and 'decrypted.'");
+      Class.forName("org.h2.Driver");
+      connection = DriverManager.getConnection(DB_PATH, username, decryptedPassword);
+      System.out.println("Password successfully retrieved and 'decrypted.'");
+
+    } catch (FileNotFoundException e) {
+      alertWindow.setContentText("DATABASE_LOGIN file is missing! "
+          + "Please return this file to it's proper location for running this application.");
+      alertWindow.show();
+
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      alertWindow.setContentText("The H2 Database driver is missing! "
+          + "Please return this file to it's proper location for running this application, or "
+          + "ensure Maven is properly setup to include it.");
+      e.printStackTrace();
+    } catch (SQLException e) {
+      alertWindow.setContentText("There was an issue connecting to the database!");
+      e.printStackTrace();
+    }
+
   }
 
   /**
@@ -453,5 +476,9 @@ public class DatabaseProvider {
 
   public Employee getCurrentEmployee() {
     return currentEmployee;
+  }
+
+  public void logoutEmployee() {
+    currentEmployee = getDefaultEmployee();
   }
 }

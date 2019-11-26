@@ -93,6 +93,7 @@ public class EmployeeController extends BaseController {
     });
 
     welcomeLogoutButton.setOnAction(e -> {
+      database.logoutEmployee();
       crossfadeViews(loginContainer, welcomeUserContainer, employeeStackRoot, 300);
     });
   }
@@ -153,6 +154,10 @@ public class EmployeeController extends BaseController {
     signupFullName.clear();
     loginUsername.clear();
     loginPassword.clear();
+
+    if (employee == null) {
+      return;
+    }
 
     loggedInAsText.setText(
         "Currently logged in as " + employee.getFirstName() + " " + employee.getLastName());
