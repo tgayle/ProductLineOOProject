@@ -9,28 +9,38 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<HBox alignment="CENTER"
+<HBox
   xmlns:fx="http://javafx.com/fxml"
   xmlns="http://javafx.com/javafx"
   fx:controller="frontend.screens.employee.EmployeeController"
   fx:id="employeeRoot">
 
-  <StackPane fx:id="employeeStackRoot">
-    <VBox alignment="CENTER_LEFT" fx:id="loginContainer">
-      <Text text="Login" styleClass="header"/>
+  <StackPane fx:id="employeeStackRoot" HBox.hgrow="ALWAYS">
+    <VBox fx:id="loginContainer">
+      <Text text="Login" styleClass="hero"/>
 
-      <Label text="Username"/>
-      <JFXTextField fx:id="loginUsername"/>
-      <Label text="Password"/>
-      <JFXPasswordField fx:id="loginPassword"/>
+      <VBox>
+        <VBox fillWidth="false" alignment="CENTER">
+          <Label text="Username" styleClass="employee--label"/>
+          <JFXTextField fx:id="loginUsername">
+            <VBox.margin>
+              <Insets bottom="12"/>
+            </VBox.margin>
+          </JFXTextField>
+          <Label text="Password" styleClass="employee--label">
 
-      <HBox spacing="8" alignment="CENTER">
-        <VBox.margin>
-          <Insets top="12"/>
-        </VBox.margin>
-        <JFXButton text="SIGN IN" fx:id="loginSignInBtn"/>
-        <JFXButton text="SIGN UP" fx:id="loginSignUpBtn"/>
-      </HBox>
+          </Label>
+          <JFXPasswordField fx:id="loginPassword"/>
+        </VBox>
+
+        <HBox spacing="8" alignment="CENTER">
+          <VBox.margin>
+            <Insets top="12"/>
+          </VBox.margin>
+          <JFXButton text="SIGN IN" fx:id="loginSignInBtn"/>
+          <JFXButton text="SIGN UP" fx:id="loginSignUpBtn"/>
+        </HBox>
+      </VBox>
     </VBox>
 
     <VBox alignment="CENTER_LEFT" fx:id="signupContainer">
@@ -56,17 +66,17 @@
       <VBox spacing="12">
         <Text text="Account Information:" styleClass="subheader"/>
 
-        <VBox styleClass="info--account">
+        <VBox styleClass="form">
           <Label text="Username:"/>
           <Text fx:id="welcomeUsername"/>
         </VBox>
 
-        <VBox styleClass="info--account">
+        <VBox styleClass="form">
           <Label text="Password:"/>
           <Text fx:id="welcomeUserPassword"/>
         </VBox>
 
-        <VBox styleClass="info--account">
+        <VBox styleClass="form">
           <Label text="Email:"/>
           <Text fx:id="welcomeEmail"/>
         </VBox>

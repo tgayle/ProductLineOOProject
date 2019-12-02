@@ -1,4 +1,5 @@
 body {
+  -fx-font-size: 1.2em;
 }
 
 .header {
@@ -15,12 +16,12 @@ body {
   -fx-font-size: 20;
 }
 
-.info--account Label {
+.employee--label {
   -fx-font-size: 1.5em;
   -fx-font-weight: bold;
 }
 
-.info--account Text {
+.form Text, .form .text {
   -fx-underline: true;
   -fx-font-size: 1.2em;
 }
@@ -34,4 +35,8 @@ JFXButton {
   -fx-background-color: teal;
   -fx-background-radius: 7px;
   -fx-text-fill: white;
+}
+
+.hero {
+  -fx-font-size: 4em;
 }
