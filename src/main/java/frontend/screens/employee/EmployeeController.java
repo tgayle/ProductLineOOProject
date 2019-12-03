@@ -8,8 +8,12 @@ import com.jfoenix.controls.JFXSnackbarLayout;
 import com.jfoenix.controls.JFXTextField;
 import frontend.BaseController;
 import javafx.animation.FadeTransition;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ListView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -45,6 +49,8 @@ public class EmployeeController extends BaseController {
   private Text welcomeEmail;
   @FXML
   private JFXButton welcomeLogoutButton;
+  @FXML
+  private ListView<Employee> usersListView;
 
   @FXML
   private VBox signupContainer;
@@ -176,23 +182,48 @@ public class EmployeeController extends BaseController {
    * and out nodes individually.
    */
   public static void crossfadeViews(Node in, Node out, Pane parent, double duration) {
-    FadeTransition t = new FadeTransition(Duration.millis(duration), out);
-    t.setFromValue(1);
-    t.setToValue(0);
-    t.setOnFinished(e -> {
+    FadeTransition fadeOut = new FadeTransition(Duration.millis(duration), out);
+    fadeOut.setFromValue(1);
+    fadeOut.setToValue(0);
+    fadeOut.setOnFinished(e -> {
       parent.getChildren().remove(out);
       in.setOpacity(0);
       parent.getChildren().add(in);
-      FadeTransition fade = new FadeTransition(Duration.millis(duration), in);
-      fade.setFromValue(0);
-      fade.setToValue(1);
-      fade.play();
+      FadeTransition fadeIn = new FadeTransition(Duration.millis(duration), in);
+      fadeIn.setFromValue(0);
+      fadeIn.setToValue(1);
+      fadeIn.play();
     });
-    t.play();
+    fadeOut.play();
   }
 
   @Override
   public void update() {
     populateWelcomeView(database.getCurrentEmployee());
+    usersListView.setItems(FXCollections.observableList(database.getAllUsers()));
+  }
+
+  public void loginUsernameKeyReleased(KeyEvent keyEvent) {
+    if (keyEvent.getCode() == KeyCode.ENTER) {
+      loginPassword.requestFocus();
+    }
+  }
+
+  public void loginPasswordKeyReleased(KeyEvent keyEvent) {
+    if (keyEvent.getCode() == KeyCode.ENTER) {
+      signInUser();
+    }
+  }
+
+  public void signupUsernameKeyReleased(KeyEvent keyEvent) {
+    if (keyEvent.getCode() == KeyCode.ENTER) {
+      signupPassword.requestFocus();
+    }
+  }
+
+  public void signupPasswordKeyReleased(KeyEvent keyEvent) {
+    if (keyEvent.getCode() == KeyCode.ENTER) {
+      signupUser();
+    }
   }
 }

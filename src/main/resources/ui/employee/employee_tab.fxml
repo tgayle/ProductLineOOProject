@@ -5,6 +5,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -22,15 +23,13 @@
       <VBox>
         <VBox fillWidth="false" alignment="CENTER">
           <Label text="Username" styleClass="employee--label"/>
-          <JFXTextField fx:id="loginUsername">
+          <JFXTextField fx:id="loginUsername" onKeyReleased="#loginUsernameKeyReleased">
             <VBox.margin>
               <Insets bottom="12"/>
             </VBox.margin>
           </JFXTextField>
-          <Label text="Password" styleClass="employee--label">
-
-          </Label>
-          <JFXPasswordField fx:id="loginPassword"/>
+          <Label text="Password" styleClass="employee--label"/>
+          <JFXPasswordField fx:id="loginPassword" onKeyReleased="#loginPasswordKeyReleased"/>
         </VBox>
 
         <HBox spacing="8" alignment="CENTER">
@@ -47,10 +46,10 @@
       <Text text="Sign Up" styleClass="header"/>
 
       <Label text="Name"/>
-      <JFXTextField fx:id="signupFullName"/>
+      <JFXTextField fx:id="signupFullName" onKeyReleased="#signupUsernameKeyReleased"/>
 
       <Label text="Password"/>
-      <JFXPasswordField fx:id="signupPassword"/>
+      <JFXPasswordField fx:id="signupPassword" onKeyReleased="#signupPasswordKeyReleased"/>
 
       <HBox spacing="8" alignment="CENTER">
         <VBox.margin>
@@ -82,6 +81,8 @@
         </VBox>
         <JFXButton text="Logout" fx:id="welcomeLogoutButton"/>
       </VBox>
+
+      <ListView fx:id="usersListView"/>
     </VBox>
   </StackPane>
 

@@ -114,11 +114,10 @@ public class Employee {
 
   @Override
   public String toString() {
-    final String pattern = "Employee Details%n"
-        + "Name : %s%n"
+    final String pattern = "Name : %s%n"
         + "Username : %s%n"
         + "Email : %s%n"
-        + "Initial Password : %s";
+        + "Password : %s";
 
     return String.format(pattern, name.toString(), username, email, password);
   }

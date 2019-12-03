@@ -481,4 +481,18 @@ public class DatabaseProvider {
   public void logoutEmployee() {
     currentEmployee = getDefaultEmployee();
   }
+
+  public List<Employee> getAllUsers() {
+    List<Employee> employees = new ArrayList<>();
+
+    try (ResultSet set = connection.createStatement().executeQuery("SELECT * FROM EMPLOYEE")) {
+      while (set.next()) {
+        employees.add(getEmployeeFromResultRow(set));
+      }
+    } catch (SQLException e) {
+      System.err.println("There was an issue getting users: " + e.getMessage());
+    }
+
+    return employees;
+  }
 }

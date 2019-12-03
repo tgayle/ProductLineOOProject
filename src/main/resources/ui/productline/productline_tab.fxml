@@ -31,11 +31,11 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
     </rowConstraints>
-    <ChoiceBox GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="150.0"
-      fx:id="pdLnItemTypeCBox"/>
+    <JFXTextField GridPane.columnIndex="1" fx:id="pdLnProductNameText"/>
     <JFXTextField GridPane.columnIndex="1" GridPane.rowIndex="1"
       fx:id="pdLnManufacturerText"/>
-    <JFXTextField GridPane.columnIndex="1" fx:id="pdLnProductNameText"/>
+    <ChoiceBox GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="150.0"
+      fx:id="pdLnItemTypeCBox"/>
     <Label GridPane.rowIndex="2" text="Item Type" styleClass="subheader"/>
     <Label GridPane.rowIndex="1" text="Manufacturer" styleClass="subheader"/>
     <Label text="Product Name" styleClass="subheader"/>
@@ -43,6 +43,7 @@
   <HBox alignment="CENTER_RIGHT">
     <JFXButton onAction="#addProductBtnClick" text="Add Product"/>
   </HBox>
+
   <Label text="Existing Products" styleClass="header"/>
   <TableView fx:id="productListTable">
     <columnResizePolicy>

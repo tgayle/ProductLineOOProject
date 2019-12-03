@@ -1,0 +1,13 @@
+backend
+examples
+frontend
+frontend.screens.employee
+frontend.screens.produce
+frontend.screens.productionlog
+frontend.screens.productline
+misc
+model
+model.audio
+model.employee
+model.production
+model.video
