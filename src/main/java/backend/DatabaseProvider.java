@@ -146,7 +146,7 @@ public class DatabaseProvider {
    */
   public int insertProduct(Product product) {
     String insertProductQuery = "INSERT INTO "
-        + "`Product`(type, manufacturer, name, serialnum) VALUES (?, ?, ?, ?)";
+        + "`Product`(type, manufacturer, name) VALUES (?, ?, ?)";
 
     try (PreparedStatement preparedInsert = connection.prepareStatement(insertProductQuery)) {
       preparedInsert.setString(1, product.getItemType().getCode());
