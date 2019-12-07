@@ -15,7 +15,6 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.HBox;
 import misc.SuppressFBWarnings;
 import model.Product;
-import model.production.ProductionWithProduct;
 
 public class ProduceController extends BaseController {
 
@@ -76,10 +75,7 @@ public class ProduceController extends BaseController {
     Product product = produceProductList.getSelectionModel().getSelectedItem();
 
     if (product != null) {
-      ProductionWithProduct production = new ProductionWithProduct(product,
-          Integer.parseInt(quantity), LocalDateTime.now());
-
-      database.recordProduction(production);
+      database.recordProductions(product, Integer.parseInt(quantity), LocalDateTime.now());
       produceProductList.getSelectionModel().clearSelection();
     }
 

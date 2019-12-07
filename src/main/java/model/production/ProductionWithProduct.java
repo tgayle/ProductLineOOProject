@@ -42,15 +42,14 @@ public class ProductionWithProduct extends Production {
    * Creates a Production record and attaches a Product to it.
    *
    * @param productionId The id of this production
-   * @param quantity The number of products produced
    * @param serialNumber The serial number of this production
    * @param manufacturedOn The date that this production was processed
    * @param product The product that was produced
    */
-  public ProductionWithProduct(int productionId, int quantity,
+  public ProductionWithProduct(int productionId,
       String serialNumber, LocalDateTime manufacturedOn, Product product,
       Employee producingEmployee) {
-    super(productionId, product.getId(), quantity, serialNumber, manufacturedOn);
+    super(productionId, product.getId(), serialNumber, manufacturedOn);
 
     setProduct(product);
     setProducingEmployee(producingEmployee);

@@ -39,6 +39,10 @@
           <JFXButton text="SIGN IN" fx:id="loginSignInBtn"/>
           <JFXButton text="SIGN UP" fx:id="loginSignUpBtn"/>
         </HBox>
+
+        <HBox alignment="CENTER">
+          <JFXButton text="LOGIN AS DEFAULT" fx:id="loginDefaultUser"/>
+        </HBox>
       </VBox>
     </VBox>
 

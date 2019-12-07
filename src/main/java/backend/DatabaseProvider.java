@@ -10,8 +10,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import javafx.scene.control.Alert;
@@ -149,12 +149,9 @@ public class DatabaseProvider {
         + "`Product`(type, manufacturer, name, serialnum) VALUES (?, ?, ?, ?)";
 
     try (PreparedStatement preparedInsert = connection.prepareStatement(insertProductQuery)) {
-      int count = getProductItemTypeCount(product.getItemType());
-      product.generateSerialNumber(count + 1);
       preparedInsert.setString(1, product.getItemType().getCode());
       preparedInsert.setString(2, product.getManufacturer());
       preparedInsert.setString(3, product.getName());
-      preparedInsert.setString(4, product.getSerialNumber());
 
       return preparedInsert.execute() ? 1 : 2;
     } catch (SQLException e) {
@@ -180,10 +177,8 @@ public class DatabaseProvider {
         String name = rows.getString(2);
         String type = rows.getString(3);
         String manufacturer = rows.getString(4);
-        String serialNumber = rows.getString(5);
 
         Product thisProduct = new Widget(id, name, ItemType.fromCode(type), manufacturer);
-        thisProduct.setSerialNumber(serialNumber);
         products.add(thisProduct);
       }
     }
@@ -193,27 +188,30 @@ public class DatabaseProvider {
   /**
    * Stores a given list of production records into the database.
    *
-   * @param productions A list of production records to be stored.
    */
-  public void recordProductions(List<Production> productions) {
+  public void recordProductions(Product product, int quantity, LocalDateTime manufacturedTime) {
     try {
       verifyEmployee();
       connection.setAutoCommit(false);
       String insertionQuery =
           "INSERT INTO PRODUCTIONRECORD "
-              + "(PRODUCT_ID, QUANTITY, DATE_PRODUCED, EMPLOYEE_ID) VALUES (?, ?, ?, ?)";
+              + "(PRODUCT_ID, DATE_PRODUCED, EMPLOYEE_ID, SERIAL_NUM) VALUES (?, ?, ?, ?)";
 
       try (PreparedStatement stmnt = connection.prepareStatement(insertionQuery)) {
-        for (Production production : productions) {
+        int count = getProductItemTypeCount(product.getItemType());
+
+        for (int i = 0; i < quantity; i++) {
+          Production production = new Production(product.getId(), manufacturedTime);
+          production.generateSerialNumber(product, ++count);
           stmnt.setInt(1, production.getProductId());
-          stmnt.setInt(2, production.getQuantity());
-          stmnt.setTimestamp(3, Timestamp.valueOf(production.getManufacturedOn()));
-          stmnt.setInt(4, currentEmployee.getId());
+          stmnt.setTimestamp(2, Timestamp.valueOf(production.getManufacturedOn()));
+          stmnt.setInt(3, currentEmployee.getId());
+          stmnt.setString(4, production.getSerialNumber());
           stmnt.execute();
         }
       }
       connection.commit();
-      System.out.println(productions.size() + " productions were recorded.");
+      System.out.println(quantity + " productions were recorded.");
 
     } catch (SQLException e) {
       System.out.println("There was an issue recording productions.");
@@ -238,8 +236,18 @@ public class DatabaseProvider {
     try (Statement stmt = connection.createStatement()) {
       ResultSet resultSet = stmt.executeQuery("SELECT * FROM Employee WHERE username='default'");
 
-      resultSet.next();
-      return getEmployeeFromResultRow(resultSet);
+      if (resultSet.next()) {
+        return getEmployeeFromResultRow(resultSet);
+      } else {
+        Employee employee = new Employee(
+            0, "Default", "User",
+            "default", "pw", "user@oracleacademy.Test"
+        );
+        insertEmployee(employee);
+
+        return getDefaultEmployee();
+      }
+
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -262,10 +270,9 @@ public class DatabaseProvider {
       while (rows.next()) {
         int productionId = rows.getInt(1);
         int productId = rows.getInt(2);
-        int quantity = rows.getInt(3);
-        Timestamp dateProduced = rows.getTimestamp(4);
+        Timestamp dateProduced = rows.getTimestamp(3);
         productions
-            .add(new Production(productionId, productId, quantity, dateProduced.toLocalDateTime()));
+            .add(new Production(productionId, productId, dateProduced.toLocalDateTime()));
       }
     }
     return productions;
@@ -279,8 +286,8 @@ public class DatabaseProvider {
    */
   public List<ProductionWithProduct> getAllProductionsWithItems() throws SQLException {
     final String getProductsWithProductQuery =
-        "SELECT PR.PRODUCTION_ID, PR.PRODUCT_ID, PR.QUANTITY, PR.DATE_PRODUCED,"
-            + " P.NAME, P.MANUFACTURER, P.TYPE, P.SERIALNUM, PR.EMPLOYEE_ID\n"
+        "SELECT PR.PRODUCTION_ID, PR.PRODUCT_ID, PR.DATE_PRODUCED,"
+            + " P.NAME, P.MANUFACTURER, P.TYPE, PR.SERIAL_NUM, PR.EMPLOYEE_ID\n"
             + "FROM PRODUCTIONRECORD PR\n"
             + "JOIN PRODUCT P on (PR.PRODUCT_ID=P.ID)";
 
@@ -292,22 +299,19 @@ public class DatabaseProvider {
     while (rows.next()) {
       int productionId = rows.getInt(1);
       int productId = rows.getInt(2);
-      int quantity = rows.getInt(3);
-      Timestamp dateProduced = rows.getTimestamp(4);
-      String productName = rows.getString(5);
-      String manufacturer = rows.getString(6);
-      String productType = rows.getString(7);
-      String serialNumber = rows.getString(8);
-      int employeeId = rows.getInt(9);
+      Timestamp dateProduced = rows.getTimestamp(3);
+      String productName = rows.getString(4);
+      String manufacturer = rows.getString(5);
+      String productType = rows.getString(6);
+      String serialNumber = rows.getString(7);
+      int employeeId = rows.getInt(8);
 
 
       Product productProduced = new Widget(productId, productName, ItemType.fromCode(productType),
           manufacturer);
 
-      productProduced.setSerialNumber(serialNumber);
-
       productions.add(
-          new ProductionWithProduct(productionId, quantity, serialNumber,
+          new ProductionWithProduct(productionId, serialNumber,
               dateProduced.toLocalDateTime(),
               productProduced, getEmployeeById(employeeId))
       );
@@ -325,7 +329,7 @@ public class DatabaseProvider {
    */
   public int getProductItemTypeCount(ItemType type) throws SQLException {
     PreparedStatement query = connection
-        .prepareStatement("SELECT COUNT(*) FROM PRODUCT WHERE SERIALNUM LIKE ?");
+        .prepareStatement("SELECT COUNT(*) FROM PRODUCTIONRECORD WHERE SERIAL_NUM LIKE ?");
     query.setString(1, "%" + type.getCode() + "%");
     ResultSet resultSet = query.executeQuery();
     resultSet.next();
@@ -334,10 +338,6 @@ public class DatabaseProvider {
     resultSet.close();
     query.close();
     return count;
-  }
-
-  public void recordProduction(Production... productions) {
-    recordProductions(Arrays.asList(productions));
   }
 
   /**
@@ -479,20 +479,32 @@ public class DatabaseProvider {
   }
 
   public void logoutEmployee() {
-    currentEmployee = getDefaultEmployee();
+    switchToDefaultUser();
   }
 
+  /**
+   * Get a list of all users registered in the database.
+   *
+   * @return A list of all users.
+   */
   public List<Employee> getAllUsers() {
     List<Employee> employees = new ArrayList<>();
 
-    try (ResultSet set = connection.createStatement().executeQuery("SELECT * FROM EMPLOYEE")) {
+    try (Statement stmt = connection.createStatement()) {
+      ResultSet set = stmt.executeQuery("SELECT * FROM EMPLOYEE");
       while (set.next()) {
         employees.add(getEmployeeFromResultRow(set));
       }
+
+      set.close();
     } catch (SQLException e) {
       System.err.println("There was an issue getting users: " + e.getMessage());
     }
 
     return employees;
+  }
+
+  public void switchToDefaultUser() {
+    currentEmployee = getDefaultEmployee();
   }
 }

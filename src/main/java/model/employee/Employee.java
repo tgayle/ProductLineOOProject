@@ -1,5 +1,7 @@
 package model.employee;
 
+import java.util.regex.Pattern;
+
 public class Employee {
 
   private int id;
@@ -74,8 +76,34 @@ public class Employee {
     email = firstAndLastName[0] + "." + firstAndLastName[1] + "@oracleacademy.Test";
   }
 
+  /**
+   * Checks a given password to see if it would be a valid password for a user.
+   *
+   * @param password A password to check.
+   * @return A string with an error message for what is wrong with the password, else null if
+   * nothing is wrong.
+   */
+  public static String checkPassword(String password) {
+    boolean containsUppercase = Pattern.compile("[A-Z]").matcher(password).find();
+    boolean containsLowercase = Pattern.compile("[a-z]").matcher(password).find();
+    boolean containsSpecial = Pattern.compile("[!@#$%^&*()_+-=\\[\\]{}]").matcher(password).find();
+
+    String pre = "Your password must contain a ";
+    if (!containsLowercase) {
+      return pre + "lowercase character.";
+    }
+    if (!containsUppercase) {
+      return pre + "uppercase character.";
+    }
+    if (!containsSpecial) {
+      return pre + "special character";
+    }
+
+    return null;
+  }
+
   private boolean isValidPassword(String password) {
-    if (password.matches(".*[A-Z].*[a-z].*[!@#$%^&*()_+-=<>?]")) {
+    if (checkPassword(password) == null) {
       this.password = password;
       return true;
     }

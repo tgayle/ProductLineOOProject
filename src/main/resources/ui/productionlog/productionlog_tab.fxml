@@ -14,7 +14,7 @@
     </columnResizePolicy>
     <columns>
       <TableColumn text="Product" fx:id="columnProductName"/>
-      <TableColumn text="Quantity" fx:id="columnQuantityProduced"/>
+      <TableColumn text="Quantity" fx:id="columnSerialNumber"/>
       <TableColumn text="Date Produced" fx:id="columnDateProduced"/>
       <TableColumn text="Produced By" fx:id="columnProducedBy"/>
     </columns>

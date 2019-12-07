@@ -36,6 +36,8 @@ public class EmployeeController extends BaseController {
   private JFXButton loginSignInBtn;
   @FXML
   private JFXButton loginSignUpBtn;
+  @FXML
+  private JFXButton loginDefaultUser;
 
   @FXML
   private VBox welcomeUserContainer;
@@ -94,6 +96,12 @@ public class EmployeeController extends BaseController {
       crossfadeViews(signupContainer, loginContainer, employeeStackRoot, 300);
     });
 
+    loginDefaultUser.setOnAction(e -> {
+      database.switchToDefaultUser();
+      populateWelcomeView(database.getCurrentEmployee());
+      crossfadeViews(welcomeUserContainer, loginContainer, employeeStackRoot, 300);
+    });
+
     signupBackBtn.setOnAction(e -> {
       crossfadeViews(loginContainer, signupContainer, employeeStackRoot, 300);
     });
@@ -113,17 +121,23 @@ public class EmployeeController extends BaseController {
     String password = signupPassword.getText();
     String fullName = signupFullName.getText();
 
+    String errorMessage = null;
+
+    if (!fullName.contains(" ")) {
+      errorMessage = "Your name must contain a space!";
+    } else {
+      errorMessage = Employee.checkPassword(password);
+    }
+
+    if (errorMessage != null) {
+      snackbar.enqueue(new SnackbarEvent(new JFXSnackbarLayout(errorMessage)));
+      return;
+    }
+
     Employee registeredEmployee = database.registerEmployee(new Employee(fullName, password));
     String successfulSignupMessage =
         "Hello " + registeredEmployee.getFirstName() + " " + registeredEmployee.getLastName() + "!";
-    String failureMessage = "Invalid signup input. Proceeding as default user.";
-
-    snackbar.enqueue(
-        new SnackbarEvent(
-            new JFXSnackbarLayout(
-                registeredEmployee.isDefaultUser() ? failureMessage : successfulSignupMessage)
-        )
-    );
+    snackbar.enqueue(new SnackbarEvent(new JFXSnackbarLayout(successfulSignupMessage)));
 
     crossfadeViews(welcomeUserContainer, signupContainer, employeeStackRoot, 300);
     populateWelcomeView(registeredEmployee);
@@ -179,7 +193,7 @@ public class EmployeeController extends BaseController {
    * @param out The window to be removed
    * @param parent The parent pane for both of these nodes
    * @param duration The length of time, in milliseconds that should be spent on animating the in
-   * and out nodes individually.
+   *     and out nodes individually.
    */
   public static void crossfadeViews(Node in, Node out, Pane parent, double duration) {
     FadeTransition fadeOut = new FadeTransition(Duration.millis(duration), out);
@@ -203,25 +217,29 @@ public class EmployeeController extends BaseController {
     usersListView.setItems(FXCollections.observableList(database.getAllUsers()));
   }
 
-  public void loginUsernameKeyReleased(KeyEvent keyEvent) {
+  @FXML
+  private void loginUsernameKeyReleased(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.ENTER) {
       loginPassword.requestFocus();
     }
   }
 
-  public void loginPasswordKeyReleased(KeyEvent keyEvent) {
+  @FXML
+  private void loginPasswordKeyReleased(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.ENTER) {
       signInUser();
     }
   }
 
-  public void signupUsernameKeyReleased(KeyEvent keyEvent) {
+  @FXML
+  private void signupUsernameKeyReleased(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.ENTER) {
       signupPassword.requestFocus();
     }
   }
 
-  public void signupPasswordKeyReleased(KeyEvent keyEvent) {
+  @FXML
+  private void signupPasswordKeyReleased(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.ENTER) {
       signupUser();
     }

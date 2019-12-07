@@ -3,6 +3,8 @@ package model.production;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import misc.Util;
+import model.Product;
 
 /**
  * A record of production containing information on the product produced, the amount produced, and
@@ -12,7 +14,6 @@ public class Production {
 
   protected int productionId; // id
   protected int productId;
-  protected int quantity;
   protected String serialNumber;
   protected LocalDateTime manufacturedOn;
 
@@ -20,13 +21,11 @@ public class Production {
    * Creates an instance of a production record.
    *
    * @param productId The id of the product that was produced
-   * @param quantity The number of items produced
    * @param manufacturedOn The date and time that the product was produced.
    */
-  public Production(int productId, int quantity, String serialNumber,
+  public Production(int productId, String serialNumber,
       LocalDateTime manufacturedOn) {
     this.productId = productId;
-    this.quantity = quantity;
     this.serialNumber = serialNumber;
     this.manufacturedOn = manufacturedOn;
   }
@@ -36,43 +35,39 @@ public class Production {
    *
    * @param productionId The id of this production
    * @param productId The id of the product produced
-   * @param quantity The number of products produced
    * @param manufacturedOn The date and time that this production was processed
    */
-  public Production(int productionId, int productId, int quantity,
+  public Production(int productionId, int productId,
       LocalDateTime manufacturedOn) {
     this.productionId = productionId;
     this.productId = productId;
-    this.quantity = quantity;
     this.manufacturedOn = manufacturedOn;
   }
 
-  /**
-   * Creates a production record given a product id, a quantity, and the date and time this
-   * production was processed.
-   *
-   * @see #Production(int, int, int, LocalDateTime)
-   */
-  public Production(int productId, int quantity, LocalDateTime manufacturedOn) {
+  public Production(int productId, LocalDateTime manufacturedOn) {
     this.productId = productId;
-    this.quantity = quantity;
     this.manufacturedOn = manufacturedOn;
   }
 
   /**
    * Creates a production record .
    *
-   * @see #Production(int, int, int, LocalDateTime)
    */
-  public Production(int productionId, int productId, int quantity, String serialNumber,
+  public Production(int productionId, int productId, String serialNumber,
       LocalDateTime manufacturedOn) {
     this.productionId = productionId;
     this.productId = productId;
-    this.quantity = quantity;
     this.serialNumber = serialNumber;
     this.manufacturedOn = manufacturedOn;
   }
 
+  public void setSerialNumber(String serialNumber) {
+    this.serialNumber = serialNumber;
+  }
+
+  public String getSerialNumber() {
+    return serialNumber;
+  }
 
   public int getProductionId() {
     return productionId;
@@ -90,14 +85,6 @@ public class Production {
     this.productId = productId;
   }
 
-  public int getQuantity() {
-    return quantity;
-  }
-
-  public void setQuantity(int quantity) {
-    this.quantity = quantity;
-  }
-
   public LocalDateTime getManufacturedOn() {
     return manufacturedOn;
   }
@@ -108,6 +95,22 @@ public class Production {
 
   public String getFormattedManufacturedDate() {
     return manufacturedOn.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM));
+  }
+
+  /**
+   * Generates a serial number for a product.
+   *
+   * @param uuid The uuid that will be assigned to this production. The next
+   */
+  public void generateSerialNumber(Product product, int uuid) {
+    String manufacturer = product.getManufacturer();
+    String manufacturerPrefix =
+        manufacturer.length() > 3 ? manufacturer.substring(0, 3) : manufacturer;
+
+    String paddedUuid = Util.padLeft(String.valueOf(uuid), 5, "0");
+    String serialNum = manufacturerPrefix + product.getItemType().getCode() + paddedUuid;
+
+    setSerialNumber(serialNum);
   }
 
   @Override
