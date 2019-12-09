@@ -1,7 +1,7 @@
 # Product Line OOP Project
 
 ## Demonstration
-TODO
+![Demo](demo.gif)
 
 
 ## Documentation
