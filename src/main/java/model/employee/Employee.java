@@ -81,7 +81,7 @@ public class Employee {
    *
    * @param password A password to check.
    * @return A string with an error message for what is wrong with the password, else null if
-   * nothing is wrong.
+   *     nothing is wrong.
    */
   public static String checkPassword(String password) {
     boolean containsUppercase = Pattern.compile("[A-Z]").matcher(password).find();
