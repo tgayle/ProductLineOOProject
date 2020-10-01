@@ -1,3 +1,8 @@
 /out/production/ProductLineOOProject/frontend/
 /out/production/ProductLineOOProject/
 /target/
+/.idea/
+/.settings/
+/.classpath
+/.project
+/ProductLineOOProject.iml

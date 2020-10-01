@@ -11,6 +11,8 @@ import javafx.stage.Stage;
  * Primary launcher and entry point into this product line management application.
  */
 public class Main extends Application {
+	
+  public static boolean DEBUG_MODE = true;
 
   public static void main(String[] args) {
     launch(args);
