@@ -20,7 +20,6 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-	  System.out.println("test");
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getClassLoader().getResource("ui/productionline.fxml"));
     final Parent root = loader.load(); // Load view early so that Controller is instantiated

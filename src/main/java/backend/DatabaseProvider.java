@@ -114,9 +114,15 @@ public class DatabaseProvider {
    * @throws SQLException when the executed query results in an error.
    */
   public void allItemsFromTable(String tableName) throws SQLException {
-	String selectQueue = "SELECT * FROM ?";
+	String selectQueue = null;
+	if(tableName.toLowerCase().equals("product")) {
+		selectQueue = "SELECT * FROM Product";
+	}
+	if(selectQueue==null) {
+		System.out.println("Message from allItemsFromTable(): That table does not exist");
+		return;
+	}
 	try(PreparedStatement preparedSelect = connection.prepareStatement(selectQueue)){
-		preparedSelect.setString(1, tableName);
 		ResultSet result = preparedSelect.executeQuery();
 		
 		List<String> columnNames = getColumnNames(result);

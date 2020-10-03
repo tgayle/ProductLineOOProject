@@ -8,7 +8,6 @@ public abstract class Product implements Item, Comparable {
   protected String name;
 
   public Product(String name, String manufacturer) {
-	  System.out.println("test");
     this.name = name;
     this.manufacturer = manufacturer;
   }
