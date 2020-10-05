@@ -124,18 +124,17 @@ public class EmployeeController extends BaseController {
 
     String errorMessage = null;
     
-    if(!Main.DEBUG_MODE) {
-      if (!fullName.contains(" ")) {
-    	errorMessage = "Your name must contain a space!";
-      } else {
-    	errorMessage = Employee.checkPassword(password);
-      }
-
-      if (errorMessage != null) {
-    	snackbar.enqueue(new SnackbarEvent(new JFXSnackbarLayout(errorMessage)));
-    	return;
-      }
+    if (!fullName.contains(" ")) {
+      errorMessage = "Your name must contain a space!";
+    } else {
+      errorMessage = Employee.checkPassword(password);
     }
+
+    if (errorMessage != null) {
+      snackbar.enqueue(new SnackbarEvent(new JFXSnackbarLayout(errorMessage)));
+      return;
+    }
+    
 
     Employee registeredEmployee = database.registerEmployee(new Employee(fullName, password));
     String successfulSignupMessage =
