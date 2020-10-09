@@ -2,13 +2,12 @@ package model.audio;
 
 import model.ItemType;
 import model.MediaProduct;
-import model.MultimediaControl;
 import model.mediabehavior.audiobehavior.AudioNext;
 import model.mediabehavior.audiobehavior.AudioPlay;
 import model.mediabehavior.audiobehavior.AudioPrevious;
 import model.mediabehavior.audiobehavior.AudioStop;
 
-public class AudioPlayer extends MediaProduct implements MultimediaControl {
+public class AudioPlayer extends MediaProduct {
 
   private String supportedAudioFormats;
   private String supportedPlaylistFormats;

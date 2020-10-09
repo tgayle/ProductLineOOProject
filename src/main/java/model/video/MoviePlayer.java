@@ -2,13 +2,12 @@ package model.video;
 
 import model.ItemType;
 import model.MediaProduct;
-import model.MultimediaControl;
 import model.mediabehavior.moviebehavior.MovieNext;
 import model.mediabehavior.moviebehavior.MoviePlay;
 import model.mediabehavior.moviebehavior.MoviePrevious;
 import model.mediabehavior.moviebehavior.MovieStop;
 
-public class MoviePlayer extends MediaProduct implements MultimediaControl {
+public class MoviePlayer extends MediaProduct {
 
   private Screen screen;
   private MonitorType monitorType;
