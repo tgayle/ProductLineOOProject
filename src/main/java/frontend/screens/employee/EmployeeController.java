@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
 import com.jfoenix.controls.JFXSnackbarLayout;
 import com.jfoenix.controls.JFXTextField;
 import frontend.BaseController;
+import frontend.Main;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -122,7 +123,7 @@ public class EmployeeController extends BaseController {
     String fullName = signupFullName.getText();
 
     String errorMessage = null;
-
+    
     if (!fullName.contains(" ")) {
       errorMessage = "Your name must contain a space!";
     } else {
@@ -133,6 +134,7 @@ public class EmployeeController extends BaseController {
       snackbar.enqueue(new SnackbarEvent(new JFXSnackbarLayout(errorMessage)));
       return;
     }
+    
 
     Employee registeredEmployee = database.registerEmployee(new Employee(fullName, password));
     String successfulSignupMessage =

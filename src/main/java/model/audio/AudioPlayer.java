@@ -1,10 +1,13 @@
 package model.audio;
 
 import model.ItemType;
-import model.MultimediaControl;
-import model.Product;
+import model.MediaProduct;
+import model.mediabehavior.audiobehavior.AudioNext;
+import model.mediabehavior.audiobehavior.AudioPlay;
+import model.mediabehavior.audiobehavior.AudioPrevious;
+import model.mediabehavior.audiobehavior.AudioStop;
 
-public class AudioPlayer extends Product implements MultimediaControl {
+public class AudioPlayer extends MediaProduct {
 
   private String supportedAudioFormats;
   private String supportedPlaylistFormats;
@@ -23,13 +26,17 @@ public class AudioPlayer extends Product implements MultimediaControl {
     this.supportedAudioFormats = supportedAudioFormats;
     this.supportedPlaylistFormats = supportedPlaylistFormats;
     setItemType(ItemType.Audio);
+    setPlay(new AudioPlay());
+    setStop(new AudioStop());
+    setPrevious(new AudioPrevious());
+    setNext(new AudioNext());
   }
 
   public AudioPlayer(String name, String manufacturer) {
     this(name, manufacturer, "N/A", "N/A");
   }
 
-  @Override
+  /*@Override
   public void play() {
     System.out.println(name + " is playing.");
   }
@@ -47,7 +54,7 @@ public class AudioPlayer extends Product implements MultimediaControl {
   @Override
   public void next() {
     System.out.println(name + " is playing the next media.");
-  }
+  }*/
 
   @Override
   public String toString() {

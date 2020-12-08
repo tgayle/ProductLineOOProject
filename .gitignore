@@ -1,3 +1,11 @@
 /out/production/ProductLineOOProject/frontend/
 /out/production/ProductLineOOProject/
 /target/
+/.idea/
+/.settings/
+/.classpath
+/.project
+/ProductLineOOProject.iml
+/ExampleDiagram.ucls
+/ProductLineOOProject.uml
+/ProductLineOOProject.umlcd

@@ -1,10 +1,13 @@
 package model.video;
 
 import model.ItemType;
-import model.MultimediaControl;
-import model.Product;
+import model.MediaProduct;
+import model.mediabehavior.moviebehavior.MovieNext;
+import model.mediabehavior.moviebehavior.MoviePlay;
+import model.mediabehavior.moviebehavior.MoviePrevious;
+import model.mediabehavior.moviebehavior.MovieStop;
 
-public class MoviePlayer extends Product implements MultimediaControl {
+public class MoviePlayer extends MediaProduct {
 
   private Screen screen;
   private MonitorType monitorType;
@@ -22,9 +25,13 @@ public class MoviePlayer extends Product implements MultimediaControl {
     this.screen = screen;
     this.monitorType = monitorType;
     setItemType(ItemType.Visual);
+    setPlay(new MoviePlay());
+    setStop(new MovieStop());
+    setPrevious(new MoviePrevious());
+    setNext(new MovieNext());
   }
 
-  @Override
+  /*@Override
   public void play() {
     System.out.println("Playing");
   }
@@ -42,7 +49,7 @@ public class MoviePlayer extends Product implements MultimediaControl {
   @Override
   public void next() {
     System.out.println("Next");
-  }
+  }*/
 
   public Screen getScreen() {
     return screen;

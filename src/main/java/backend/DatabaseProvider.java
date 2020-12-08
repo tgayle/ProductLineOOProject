@@ -114,24 +114,31 @@ public class DatabaseProvider {
    * @throws SQLException when the executed query results in an error.
    */
   public void allItemsFromTable(String tableName) throws SQLException {
-    Statement stmt = connection.createStatement();
-    ResultSet result = stmt.executeQuery("SELECT * FROM " + tableName);
-
-    List<String> columnNames = getColumnNames(result);
-
-    for (String col : columnNames) {
-      System.out.print(col + "\t");
-    }
-    System.out.println();
-
-    while (result.next()) {
-      for (int i = 1; i <= columnNames.size(); i++) {
-        System.out.print(result.getString(i) + "\t");
-      }
-      System.out.println();
-    }
-
-    stmt.close();
+	String selectQueue = null;
+	if(tableName.toLowerCase().equals("product")) {
+		selectQueue = "SELECT * FROM Product";
+	}
+	if(selectQueue==null) {
+		System.out.println("Message from allItemsFromTable(): That table does not exist");
+		return;
+	}
+	try(PreparedStatement preparedSelect = connection.prepareStatement(selectQueue)){
+		ResultSet result = preparedSelect.executeQuery();
+		
+		List<String> columnNames = getColumnNames(result);
+		for (String col : columnNames) {
+			System.out.print(col + "\t");
+		}
+		System.out.println();
+		while (result.next()) {
+			for (int i = 1; i <= columnNames.size(); i++) {
+				System.out.print(result.getString(i) + "\t");
+			}
+			System.out.println();
+		}
+	}catch(Exception e) {
+		e.printStackTrace();		
+	}
   }
 
   public void close() throws SQLException {
